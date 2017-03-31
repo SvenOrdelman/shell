@@ -4,7 +4,7 @@ line: command (WS PIPELINE WS command)*;
 command: program (WS extra)*;
 extra: flag | ((input | output) WS)? parameter;
 program: LOWERCASE+;
-flag: '-' (LOWERCASE | UPPERCASE | NUMBER)+;
+flag: OTHER (LOWERCASE | UPPERCASE | NUMBER)+;
 parameter: (LOWERCASE | UPPERCASE | NUMBER | OTHER)+;
 
 WS: ' '+;
