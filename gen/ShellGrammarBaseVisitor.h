@@ -1,5 +1,5 @@
 
-// Generated from /home/sven/Desktop/Base/ShellGrammar.g4 by ANTLR 4.6
+// Generated from /home/jeroen/CLionProjects/Pearl/ShellGrammar.g4 by ANTLR 4.6
 
 #pragma once
 
@@ -24,10 +24,6 @@ public:
   }
 
   virtual antlrcpp::Any visitProgram(ShellGrammarParser::ProgramContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual antlrcpp::Any visitArgument(ShellGrammarParser::ArgumentContext *ctx) override {
     return visitChildren(ctx);
   }
 

@@ -1,5 +1,5 @@
 
-// Generated from /home/sven/Desktop/Base/ShellGrammar.g4 by ANTLR 4.6
+// Generated from /home/jeroen/CLionProjects/Pearl/ShellGrammar.g4 by ANTLR 4.6
 
 #pragma once
 
@@ -24,8 +24,6 @@ public:
     virtual antlrcpp::Any visitCommand(ShellGrammarParser::CommandContext *context) = 0;
 
     virtual antlrcpp::Any visitProgram(ShellGrammarParser::ProgramContext *context) = 0;
-
-    virtual antlrcpp::Any visitArgument(ShellGrammarParser::ArgumentContext *context) = 0;
 
     virtual antlrcpp::Any visitFlag(ShellGrammarParser::FlagContext *context) = 0;
 

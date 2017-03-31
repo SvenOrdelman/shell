@@ -31,6 +31,7 @@ int main() {
 		// MyVisitor visitor;
 		// visitor.visit(parseTree);
 	}
+	std::cout << "bye" << std::endl;
 
 	return 0;
 }

@@ -1,5 +1,5 @@
 
-// Generated from /home/sven/Desktop/Base/ShellGrammar.g4 by ANTLR 4.6
+// Generated from /home/jeroen/CLionProjects/Pearl/ShellGrammar.g4 by ANTLR 4.6
 
 #pragma once
 
@@ -12,8 +12,8 @@
 class  ShellGrammarLexer : public antlr4::Lexer {
 public:
   enum {
-    T__0 = 1, WS = 2, PIPELINE = 3, LOWERCASE = 4, UPPERCASE = 5, NUMBER = 6, 
-    OTHER = 7
+    T__0 = 1, WS = 2, INPUT = 3, OUTPUT = 4, PIPELINE = 5, LOWERCASE = 6, 
+    UPPERCASE = 7, NUMBER = 8, OTHER = 9
   };
 
   ShellGrammarLexer(antlr4::CharStream *input);
