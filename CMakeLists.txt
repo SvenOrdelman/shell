@@ -306,7 +306,7 @@ set(SOURCE_FILES
 
     src/main.cpp
 
-)
+        src/PearlVisitor.cpp src/PearlVisitor.h)
 
 include_directories(
         runtime/src
