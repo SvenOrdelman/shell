@@ -1,8 +1,7 @@
 
-// Generated from /home/jeroen/CLionProjects/Pearl/ShellGrammar.g4 by ANTLR 4.6
+// Generated from /home/sven/Desktop/Base/ShellGrammar.g4 by ANTLR 4.6
 
 
-#include "ShellGrammarListener.h"
 #include "ShellGrammarVisitor.h"
 
 #include "ShellGrammarParser.h"
@@ -66,19 +65,6 @@ tree::TerminalNode* ShellGrammarParser::LineContext::PIPELINE(size_t i) {
 size_t ShellGrammarParser::LineContext::getRuleIndex() const {
   return ShellGrammarParser::RuleLine;
 }
-
-void ShellGrammarParser::LineContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<ShellGrammarListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterLine(this);
-}
-
-void ShellGrammarParser::LineContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<ShellGrammarListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitLine(this);
-}
-
 
 antlrcpp::Any ShellGrammarParser::LineContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<ShellGrammarVisitor*>(visitor))
@@ -180,19 +166,6 @@ ShellGrammarParser::FlagContext* ShellGrammarParser::CommandContext::flag(size_t
 size_t ShellGrammarParser::CommandContext::getRuleIndex() const {
   return ShellGrammarParser::RuleCommand;
 }
-
-void ShellGrammarParser::CommandContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<ShellGrammarListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterCommand(this);
-}
-
-void ShellGrammarParser::CommandContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<ShellGrammarListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitCommand(this);
-}
-
 
 antlrcpp::Any ShellGrammarParser::CommandContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<ShellGrammarVisitor*>(visitor))
@@ -306,19 +279,6 @@ size_t ShellGrammarParser::ProgramContext::getRuleIndex() const {
   return ShellGrammarParser::RuleProgram;
 }
 
-void ShellGrammarParser::ProgramContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<ShellGrammarListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterProgram(this);
-}
-
-void ShellGrammarParser::ProgramContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<ShellGrammarListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitProgram(this);
-}
-
-
 antlrcpp::Any ShellGrammarParser::ProgramContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<ShellGrammarVisitor*>(visitor))
     return parserVisitor->visitProgram(this);
@@ -391,19 +351,6 @@ tree::TerminalNode* ShellGrammarParser::FlagContext::NUMBER(size_t i) {
 size_t ShellGrammarParser::FlagContext::getRuleIndex() const {
   return ShellGrammarParser::RuleFlag;
 }
-
-void ShellGrammarParser::FlagContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<ShellGrammarListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterFlag(this);
-}
-
-void ShellGrammarParser::FlagContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<ShellGrammarListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitFlag(this);
-}
-
 
 antlrcpp::Any ShellGrammarParser::FlagContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<ShellGrammarVisitor*>(visitor))
@@ -500,19 +447,6 @@ tree::TerminalNode* ShellGrammarParser::ParameterContext::OTHER(size_t i) {
 size_t ShellGrammarParser::ParameterContext::getRuleIndex() const {
   return ShellGrammarParser::RuleParameter;
 }
-
-void ShellGrammarParser::ParameterContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<ShellGrammarListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterParameter(this);
-}
-
-void ShellGrammarParser::ParameterContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<ShellGrammarListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitParameter(this);
-}
-
 
 antlrcpp::Any ShellGrammarParser::ParameterContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<ShellGrammarVisitor*>(visitor))

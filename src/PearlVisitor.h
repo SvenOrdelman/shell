@@ -19,7 +19,6 @@ public:
     antlrcpp::Any visitFlag(ShellGrammarParser::FlagContext *ctx) override;
 
     antlrcpp::Any visitParameter(ShellGrammarParser::ParameterContext *ctx) override;
-
 };
 
 
