@@ -65,8 +65,10 @@ public:
     antlr4::tree::TerminalNode* WS(size_t i);
     std::vector<ParameterContext *> parameter();
     ParameterContext* parameter(size_t i);
-    antlr4::tree::TerminalNode *INPUT();
-    antlr4::tree::TerminalNode *OUTPUT();
+    std::vector<antlr4::tree::TerminalNode *> INPUT();
+    antlr4::tree::TerminalNode* INPUT(size_t i);
+    std::vector<antlr4::tree::TerminalNode *> OUTPUT();
+    antlr4::tree::TerminalNode* OUTPUT(size_t i);
     std::vector<FlagContext *> flag();
     FlagContext* flag(size_t i);
 

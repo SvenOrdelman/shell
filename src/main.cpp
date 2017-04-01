@@ -4,6 +4,7 @@
 #include <tree/ParseTree.h>
 #include "../gen/ShellGrammarLexer.h"
 #include "../gen/ShellGrammarParser.h"
+#include "PearlVisitor.h"
 
 std::string working_directory = "/";
 
@@ -14,7 +15,7 @@ int main() {
 
 		std::string line;
 		getline(std::cin, line);
-		if(line == "exit"){
+		if (line == "exit"){
 			break;
 		}
 
@@ -25,11 +26,11 @@ int main() {
 
 		// Create parser
 		ShellGrammarParser parser(&tokens);
-		antlr4::tree::ParseTree *parseTree = parser.command();
+		antlr4::tree::ParseTree *parseTree = parser.line();
 
 		// Then, visit your tree
-		// MyVisitor visitor;
-		// visitor.visit(parseTree);
+		PearlVisitor visitor;
+		visitor.visit(parseTree);
 	}
 	std::cout << "bye" << std::endl;
 

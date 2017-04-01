@@ -5,7 +5,6 @@
 #ifndef SHELL_PEARLVISITOR_H
 #define SHELL_PEARLVISITOR_H
 
-
 #include "../gen/ShellGrammarBaseVisitor.h"
 
 class PearlVisitor : public ShellGrammarBaseVisitor{
@@ -16,8 +15,6 @@ public:
     antlrcpp::Any visitCommand(ShellGrammarParser::CommandContext *ctx) override;
 
     antlrcpp::Any visitProgram(ShellGrammarParser::ProgramContext *ctx) override;
-
-    antlrcpp::Any visitArgument(ShellGrammarParser::ArgumentContext *ctx) override;
 
     antlrcpp::Any visitFlag(ShellGrammarParser::FlagContext *ctx) override;
 
