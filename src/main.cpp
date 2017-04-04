@@ -9,30 +9,30 @@
 std::string working_directory = "/";
 
 int main() {
-	for(;;) {
-		std::cout << working_directory << " $ ";
-		std::cout.flush();
+    for(;;) {
+        std::cout << working_directory << " $ ";
+        std::cout.flush();
 
-		std::string line;
-		getline(std::cin, line);
-		if (line == "exit"){
-			break;
-		}
+        std::string line;
+        getline(std::cin, line);
+        if (line == "exit"){
+            break;
+        }
 
-		// Create input stream, create lexer and use lexer to create stream of tokens
-		antlr4::ANTLRInputStream inputStream(line);
-		ShellGrammarLexer lexer(&inputStream);
-		antlr4::CommonTokenStream tokens(&lexer);
+        // Create input stream, create lexer and use lexer to create stream of tokens
+        antlr4::ANTLRInputStream inputStream(line);
+        ShellGrammarLexer lexer(&inputStream);
+        antlr4::CommonTokenStream tokens(&lexer);
 
-		// Create parser
-		ShellGrammarParser parser(&tokens);
-		antlr4::tree::ParseTree *parseTree = parser.line();
+        // Create parser
+        ShellGrammarParser parser(&tokens);
+        antlr4::tree::ParseTree *parseTree = parser.line();
 
-		// Then, visit your tree
-		PearlVisitor visitor;
-		visitor.visit(parseTree);
-	}
-	std::cout << "bye" << std::endl;
+        // Then, visit your tree
+        PearlVisitor visitor;
+        visitor.visit(parseTree);
+    }
+    std::cout << "bye" << std::endl;
 
-	return 0;
+    return 0;
 }
