@@ -6,7 +6,7 @@
 #include "../gen/ShellGrammarParser.h"
 #include "PearlVisitor.h"
 
-std::string working_directory = "/";
+std::string working_directory = "/home/jeroen/Downloads/week 7";
 
 int main() {
     for(;;) {
@@ -20,17 +20,26 @@ int main() {
         }
 
         // Create input stream, create lexer and use lexer to create stream of tokens
-        antlr4::ANTLRInputStream inputStream(line);
-        ShellGrammarLexer lexer(&inputStream);
-        antlr4::CommonTokenStream tokens(&lexer);
+        try
+        {
+            antlr4::ANTLRInputStream inputStream(line);
+            ShellGrammarLexer lexer(&inputStream);
+            antlr4::CommonTokenStream tokens(&lexer);
 
-        // Create parser
-        ShellGrammarParser parser(&tokens);
-        antlr4::tree::ParseTree *parseTree = parser.line();
+            std::cout << lexer. << std::endl;
 
-        // Then, visit your tree
-        PearlVisitor visitor;
-        visitor.visit(parseTree);
+            // Create parser
+            ShellGrammarParser parser(&tokens);
+            antlr4::tree::ParseTree *parseTree = parser.line();
+
+            // Then, visit your tree
+            PearlVisitor visitor;
+            visitor.visit(parseTree);
+        }
+        catch (...)
+        {
+
+        }
     }
     std::cout << "bye" << std::endl;
 

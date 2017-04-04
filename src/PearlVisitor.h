@@ -19,6 +19,12 @@ public:
     antlrcpp::Any visitFlag(ShellGrammarParser::FlagContext *ctx) override;
 
     antlrcpp::Any visitParameter(ShellGrammarParser::ParameterContext *ctx) override;
+
+    antlrcpp::Any visitExtra(ShellGrammarParser::ExtraContext *ctx) override;
+
+    antlrcpp::Any visitInput(ShellGrammarParser::InputContext *ctx) override;
+
+    antlrcpp::Any visitOutput(ShellGrammarParser::OutputContext *ctx) override;
 };
 
 

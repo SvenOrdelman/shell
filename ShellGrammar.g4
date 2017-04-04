@@ -1,15 +1,19 @@
 grammar ShellGrammar;
 
 line: command (WS PIPELINE WS command)*;
-command: program ((WS (flag | parameter)) | (WS (INPUT | OUTPUT) WS parameter))*;
+command: program (WS extra)*;
+extra: flag | ((input | output) WS)? parameter;
 program: LOWERCASE+;
 flag: '-' (LOWERCASE | UPPERCASE | NUMBER)+;
 parameter: (LOWERCASE | UPPERCASE | NUMBER | OTHER)+;
 
 WS: ' '+;
 
-INPUT: '<';
-OUTPUT: '>' | '2>' | '>>';
+input: '<';
+output: '>'
+    | '2>'
+    | '>>'
+    ;
 
 PIPELINE: '|';
 LOWERCASE: [a-z];
