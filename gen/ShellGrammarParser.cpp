@@ -97,21 +97,21 @@ ShellGrammarParser::LineContext* ShellGrammarParser::line() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(16);
+    setState(14);
     command();
-    setState(23);
+    setState(21);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while (_la == ShellGrammarParser::WS) {
+      setState(15);
+      match(ShellGrammarParser::WS);
+      setState(16);
+      match(ShellGrammarParser::PIPELINE);
       setState(17);
       match(ShellGrammarParser::WS);
       setState(18);
-      match(ShellGrammarParser::PIPELINE);
-      setState(19);
-      match(ShellGrammarParser::WS);
-      setState(20);
       command();
-      setState(25);
+      setState(23);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
@@ -187,19 +187,19 @@ ShellGrammarParser::CommandContext* ShellGrammarParser::command() {
   try {
     size_t alt;
     enterOuterAlt(_localctx, 1);
-    setState(26);
+    setState(24);
     program();
-    setState(31);
+    setState(29);
     _errHandler->sync(this);
     alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 1, _ctx);
     while (alt != 2 && alt != atn::ATN::INVALID_ALT_NUMBER) {
       if (alt == 1) {
-        setState(27);
+        setState(25);
         match(ShellGrammarParser::WS);
-        setState(28);
+        setState(26);
         extra(); 
       }
-      setState(33);
+      setState(31);
       _errHandler->sync(this);
       alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 1, _ctx);
     }
@@ -218,10 +218,6 @@ ShellGrammarParser::CommandContext* ShellGrammarParser::command() {
 
 ShellGrammarParser::ExtraContext::ExtraContext(ParserRuleContext *parent, size_t invokingState)
   : ParserRuleContext(parent, invokingState) {
-}
-
-ShellGrammarParser::FlagContext* ShellGrammarParser::ExtraContext::flag() {
-  return getRuleContext<ShellGrammarParser::FlagContext>(0);
 }
 
 ShellGrammarParser::ParameterContext* ShellGrammarParser::ExtraContext::parameter() {
@@ -274,65 +270,41 @@ ShellGrammarParser::ExtraContext* ShellGrammarParser::extra() {
     exitRule();
   });
   try {
-    setState(44);
+    enterOuterAlt(_localctx, 1);
+    setState(38);
     _errHandler->sync(this);
-    switch (_input->LA(1)) {
-      case ShellGrammarParser::T__0: {
-        enterOuterAlt(_localctx, 1);
-        setState(34);
-        flag();
-        break;
-      }
 
-      case ShellGrammarParser::T__1:
-      case ShellGrammarParser::T__2:
-      case ShellGrammarParser::T__3:
-      case ShellGrammarParser::T__4:
-      case ShellGrammarParser::LOWERCASE:
-      case ShellGrammarParser::UPPERCASE:
-      case ShellGrammarParser::NUMBER:
-      case ShellGrammarParser::OTHER: {
-        enterOuterAlt(_localctx, 2);
-        setState(41);
-        _errHandler->sync(this);
-
-        _la = _input->LA(1);
-        if ((((_la & ~ 0x3fULL) == 0) &&
-          ((1ULL << _la) & ((1ULL << ShellGrammarParser::T__1)
-          | (1ULL << ShellGrammarParser::T__2)
-          | (1ULL << ShellGrammarParser::T__3)
-          | (1ULL << ShellGrammarParser::T__4))) != 0)) {
-          setState(37);
-          _errHandler->sync(this);
-          switch (_input->LA(1)) {
-            case ShellGrammarParser::T__1: {
-              setState(35);
-              input();
-              break;
-            }
-
-            case ShellGrammarParser::T__2:
-            case ShellGrammarParser::T__3:
-            case ShellGrammarParser::T__4: {
-              setState(36);
-              output();
-              break;
-            }
-
-          default:
-            throw NoViableAltException(this);
-          }
-          setState(39);
-          match(ShellGrammarParser::WS);
+    _la = _input->LA(1);
+    if ((((_la & ~ 0x3fULL) == 0) &&
+      ((1ULL << _la) & ((1ULL << ShellGrammarParser::T__0)
+      | (1ULL << ShellGrammarParser::T__1)
+      | (1ULL << ShellGrammarParser::T__2)
+      | (1ULL << ShellGrammarParser::T__3))) != 0)) {
+      setState(34);
+      _errHandler->sync(this);
+      switch (_input->LA(1)) {
+        case ShellGrammarParser::T__0: {
+          setState(32);
+          input();
+          break;
         }
-        setState(43);
-        parameter();
-        break;
-      }
 
-    default:
-      throw NoViableAltException(this);
+        case ShellGrammarParser::T__1:
+        case ShellGrammarParser::T__2:
+        case ShellGrammarParser::T__3: {
+          setState(33);
+          output();
+          break;
+        }
+
+      default:
+        throw NoViableAltException(this);
+      }
+      setState(36);
+      match(ShellGrammarParser::WS);
     }
+    setState(40);
+    parameter();
    
   }
   catch (RecognitionException &e) {
@@ -350,12 +322,8 @@ ShellGrammarParser::ProgramContext::ProgramContext(ParserRuleContext *parent, si
   : ParserRuleContext(parent, invokingState) {
 }
 
-std::vector<tree::TerminalNode *> ShellGrammarParser::ProgramContext::LOWERCASE() {
-  return getTokens(ShellGrammarParser::LOWERCASE);
-}
-
-tree::TerminalNode* ShellGrammarParser::ProgramContext::LOWERCASE(size_t i) {
-  return getToken(ShellGrammarParser::LOWERCASE, i);
+tree::TerminalNode* ShellGrammarParser::ProgramContext::WORD() {
+  return getToken(ShellGrammarParser::WORD, 0);
 }
 
 
@@ -386,124 +354,14 @@ antlrcpp::Any ShellGrammarParser::ProgramContext::accept(tree::ParseTreeVisitor 
 ShellGrammarParser::ProgramContext* ShellGrammarParser::program() {
   ProgramContext *_localctx = _tracker.createInstance<ProgramContext>(_ctx, getState());
   enterRule(_localctx, 6, ShellGrammarParser::RuleProgram);
-  size_t _la = 0;
 
   auto onExit = finally([=] {
     exitRule();
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(47); 
-    _errHandler->sync(this);
-    _la = _input->LA(1);
-    do {
-      setState(46);
-      match(ShellGrammarParser::LOWERCASE);
-      setState(49); 
-      _errHandler->sync(this);
-      _la = _input->LA(1);
-    } while (_la == ShellGrammarParser::LOWERCASE);
-   
-  }
-  catch (RecognitionException &e) {
-    _errHandler->reportError(this, e);
-    _localctx->exception = std::current_exception();
-    _errHandler->recover(this, _localctx->exception);
-  }
-
-  return _localctx;
-}
-
-//----------------- FlagContext ------------------------------------------------------------------
-
-ShellGrammarParser::FlagContext::FlagContext(ParserRuleContext *parent, size_t invokingState)
-  : ParserRuleContext(parent, invokingState) {
-}
-
-std::vector<tree::TerminalNode *> ShellGrammarParser::FlagContext::LOWERCASE() {
-  return getTokens(ShellGrammarParser::LOWERCASE);
-}
-
-tree::TerminalNode* ShellGrammarParser::FlagContext::LOWERCASE(size_t i) {
-  return getToken(ShellGrammarParser::LOWERCASE, i);
-}
-
-std::vector<tree::TerminalNode *> ShellGrammarParser::FlagContext::UPPERCASE() {
-  return getTokens(ShellGrammarParser::UPPERCASE);
-}
-
-tree::TerminalNode* ShellGrammarParser::FlagContext::UPPERCASE(size_t i) {
-  return getToken(ShellGrammarParser::UPPERCASE, i);
-}
-
-std::vector<tree::TerminalNode *> ShellGrammarParser::FlagContext::NUMBER() {
-  return getTokens(ShellGrammarParser::NUMBER);
-}
-
-tree::TerminalNode* ShellGrammarParser::FlagContext::NUMBER(size_t i) {
-  return getToken(ShellGrammarParser::NUMBER, i);
-}
-
-
-size_t ShellGrammarParser::FlagContext::getRuleIndex() const {
-  return ShellGrammarParser::RuleFlag;
-}
-
-void ShellGrammarParser::FlagContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<ShellGrammarListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterFlag(this);
-}
-
-void ShellGrammarParser::FlagContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<ShellGrammarListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitFlag(this);
-}
-
-
-antlrcpp::Any ShellGrammarParser::FlagContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<ShellGrammarVisitor*>(visitor))
-    return parserVisitor->visitFlag(this);
-  else
-    return visitor->visitChildren(this);
-}
-
-ShellGrammarParser::FlagContext* ShellGrammarParser::flag() {
-  FlagContext *_localctx = _tracker.createInstance<FlagContext>(_ctx, getState());
-  enterRule(_localctx, 8, ShellGrammarParser::RuleFlag);
-  size_t _la = 0;
-
-  auto onExit = finally([=] {
-    exitRule();
-  });
-  try {
-    enterOuterAlt(_localctx, 1);
-    setState(51);
-    match(ShellGrammarParser::T__0);
-    setState(53); 
-    _errHandler->sync(this);
-    _la = _input->LA(1);
-    do {
-      setState(52);
-      _la = _input->LA(1);
-      if (!((((_la & ~ 0x3fULL) == 0) &&
-        ((1ULL << _la) & ((1ULL << ShellGrammarParser::LOWERCASE)
-        | (1ULL << ShellGrammarParser::UPPERCASE)
-        | (1ULL << ShellGrammarParser::NUMBER))) != 0))) {
-      _errHandler->recoverInline(this);
-      }
-      else {
-        _errHandler->reportMatch(this);
-        consume();
-      }
-      setState(55); 
-      _errHandler->sync(this);
-      _la = _input->LA(1);
-    } while ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & ((1ULL << ShellGrammarParser::LOWERCASE)
-      | (1ULL << ShellGrammarParser::UPPERCASE)
-      | (1ULL << ShellGrammarParser::NUMBER))) != 0));
+    setState(42);
+    match(ShellGrammarParser::WORD);
    
   }
   catch (RecognitionException &e) {
@@ -521,36 +379,8 @@ ShellGrammarParser::ParameterContext::ParameterContext(ParserRuleContext *parent
   : ParserRuleContext(parent, invokingState) {
 }
 
-std::vector<tree::TerminalNode *> ShellGrammarParser::ParameterContext::LOWERCASE() {
-  return getTokens(ShellGrammarParser::LOWERCASE);
-}
-
-tree::TerminalNode* ShellGrammarParser::ParameterContext::LOWERCASE(size_t i) {
-  return getToken(ShellGrammarParser::LOWERCASE, i);
-}
-
-std::vector<tree::TerminalNode *> ShellGrammarParser::ParameterContext::UPPERCASE() {
-  return getTokens(ShellGrammarParser::UPPERCASE);
-}
-
-tree::TerminalNode* ShellGrammarParser::ParameterContext::UPPERCASE(size_t i) {
-  return getToken(ShellGrammarParser::UPPERCASE, i);
-}
-
-std::vector<tree::TerminalNode *> ShellGrammarParser::ParameterContext::NUMBER() {
-  return getTokens(ShellGrammarParser::NUMBER);
-}
-
-tree::TerminalNode* ShellGrammarParser::ParameterContext::NUMBER(size_t i) {
-  return getToken(ShellGrammarParser::NUMBER, i);
-}
-
-std::vector<tree::TerminalNode *> ShellGrammarParser::ParameterContext::OTHER() {
-  return getTokens(ShellGrammarParser::OTHER);
-}
-
-tree::TerminalNode* ShellGrammarParser::ParameterContext::OTHER(size_t i) {
-  return getToken(ShellGrammarParser::OTHER, i);
+tree::TerminalNode* ShellGrammarParser::ParameterContext::WORD() {
+  return getToken(ShellGrammarParser::WORD, 0);
 }
 
 
@@ -580,39 +410,15 @@ antlrcpp::Any ShellGrammarParser::ParameterContext::accept(tree::ParseTreeVisito
 
 ShellGrammarParser::ParameterContext* ShellGrammarParser::parameter() {
   ParameterContext *_localctx = _tracker.createInstance<ParameterContext>(_ctx, getState());
-  enterRule(_localctx, 10, ShellGrammarParser::RuleParameter);
-  size_t _la = 0;
+  enterRule(_localctx, 8, ShellGrammarParser::RuleParameter);
 
   auto onExit = finally([=] {
     exitRule();
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(58); 
-    _errHandler->sync(this);
-    _la = _input->LA(1);
-    do {
-      setState(57);
-      _la = _input->LA(1);
-      if (!((((_la & ~ 0x3fULL) == 0) &&
-        ((1ULL << _la) & ((1ULL << ShellGrammarParser::LOWERCASE)
-        | (1ULL << ShellGrammarParser::UPPERCASE)
-        | (1ULL << ShellGrammarParser::NUMBER)
-        | (1ULL << ShellGrammarParser::OTHER))) != 0))) {
-      _errHandler->recoverInline(this);
-      }
-      else {
-        _errHandler->reportMatch(this);
-        consume();
-      }
-      setState(60); 
-      _errHandler->sync(this);
-      _la = _input->LA(1);
-    } while ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & ((1ULL << ShellGrammarParser::LOWERCASE)
-      | (1ULL << ShellGrammarParser::UPPERCASE)
-      | (1ULL << ShellGrammarParser::NUMBER)
-      | (1ULL << ShellGrammarParser::OTHER))) != 0));
+    setState(44);
+    match(ShellGrammarParser::WORD);
    
   }
   catch (RecognitionException &e) {
@@ -657,15 +463,15 @@ antlrcpp::Any ShellGrammarParser::InputContext::accept(tree::ParseTreeVisitor *v
 
 ShellGrammarParser::InputContext* ShellGrammarParser::input() {
   InputContext *_localctx = _tracker.createInstance<InputContext>(_ctx, getState());
-  enterRule(_localctx, 12, ShellGrammarParser::RuleInput);
+  enterRule(_localctx, 10, ShellGrammarParser::RuleInput);
 
   auto onExit = finally([=] {
     exitRule();
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(62);
-    match(ShellGrammarParser::T__1);
+    setState(46);
+    match(ShellGrammarParser::T__0);
    
   }
   catch (RecognitionException &e) {
@@ -710,7 +516,7 @@ antlrcpp::Any ShellGrammarParser::OutputContext::accept(tree::ParseTreeVisitor *
 
 ShellGrammarParser::OutputContext* ShellGrammarParser::output() {
   OutputContext *_localctx = _tracker.createInstance<OutputContext>(_ctx, getState());
-  enterRule(_localctx, 14, ShellGrammarParser::RuleOutput);
+  enterRule(_localctx, 12, ShellGrammarParser::RuleOutput);
   size_t _la = 0;
 
   auto onExit = finally([=] {
@@ -718,12 +524,12 @@ ShellGrammarParser::OutputContext* ShellGrammarParser::output() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(64);
+    setState(48);
     _la = _input->LA(1);
     if (!((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & ((1ULL << ShellGrammarParser::T__2)
-      | (1ULL << ShellGrammarParser::T__3)
-      | (1ULL << ShellGrammarParser::T__4))) != 0))) {
+      ((1ULL << _la) & ((1ULL << ShellGrammarParser::T__1)
+      | (1ULL << ShellGrammarParser::T__2)
+      | (1ULL << ShellGrammarParser::T__3))) != 0))) {
     _errHandler->recoverInline(this);
     }
     else {
@@ -750,16 +556,15 @@ atn::ATN ShellGrammarParser::_atn;
 std::vector<uint16_t> ShellGrammarParser::_serializedATN;
 
 std::vector<std::string> ShellGrammarParser::_ruleNames = {
-  "line", "command", "extra", "program", "flag", "parameter", "input", "output"
+  "line", "command", "extra", "program", "parameter", "input", "output"
 };
 
 std::vector<std::string> ShellGrammarParser::_literalNames = {
-  "", "'-'", "'<'", "'>'", "'2>'", "'>>'", "", "'|'"
+  "", "'<'", "'>'", "'2>'", "'>>'", "", "'|'"
 };
 
 std::vector<std::string> ShellGrammarParser::_symbolicNames = {
-  "", "", "", "", "", "", "WS", "PIPELINE", "LOWERCASE", "UPPERCASE", "NUMBER", 
-  "OTHER"
+  "", "", "", "", "", "WORD", "PIPELINE", "WS"
 };
 
 dfa::Vocabulary ShellGrammarParser::_vocabulary(_literalNames, _symbolicNames);
@@ -782,50 +587,38 @@ ShellGrammarParser::Initializer::Initializer() {
 
   _serializedATN = {
     0x3, 0x430, 0xd6d1, 0x8206, 0xad2d, 0x4417, 0xaef1, 0x8d80, 0xaadd, 
-    0x3, 0xd, 0x45, 0x4, 0x2, 0x9, 0x2, 0x4, 0x3, 0x9, 0x3, 0x4, 0x4, 0x9, 
+    0x3, 0x9, 0x35, 0x4, 0x2, 0x9, 0x2, 0x4, 0x3, 0x9, 0x3, 0x4, 0x4, 0x9, 
     0x4, 0x4, 0x5, 0x9, 0x5, 0x4, 0x6, 0x9, 0x6, 0x4, 0x7, 0x9, 0x7, 0x4, 
-    0x8, 0x9, 0x8, 0x4, 0x9, 0x9, 0x9, 0x3, 0x2, 0x3, 0x2, 0x3, 0x2, 0x3, 
-    0x2, 0x3, 0x2, 0x7, 0x2, 0x18, 0xa, 0x2, 0xc, 0x2, 0xe, 0x2, 0x1b, 0xb, 
-    0x2, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x7, 0x3, 0x20, 0xa, 0x3, 0xc, 0x3, 
-    0xe, 0x3, 0x23, 0xb, 0x3, 0x3, 0x4, 0x3, 0x4, 0x3, 0x4, 0x5, 0x4, 0x28, 
-    0xa, 0x4, 0x3, 0x4, 0x3, 0x4, 0x5, 0x4, 0x2c, 0xa, 0x4, 0x3, 0x4, 0x5, 
-    0x4, 0x2f, 0xa, 0x4, 0x3, 0x5, 0x6, 0x5, 0x32, 0xa, 0x5, 0xd, 0x5, 0xe, 
-    0x5, 0x33, 0x3, 0x6, 0x3, 0x6, 0x6, 0x6, 0x38, 0xa, 0x6, 0xd, 0x6, 0xe, 
-    0x6, 0x39, 0x3, 0x7, 0x6, 0x7, 0x3d, 0xa, 0x7, 0xd, 0x7, 0xe, 0x7, 0x3e, 
-    0x3, 0x8, 0x3, 0x8, 0x3, 0x9, 0x3, 0x9, 0x3, 0x9, 0x2, 0x2, 0xa, 0x2, 
-    0x4, 0x6, 0x8, 0xa, 0xc, 0xe, 0x10, 0x2, 0x5, 0x3, 0x2, 0xa, 0xc, 0x3, 
-    0x2, 0xa, 0xd, 0x3, 0x2, 0x5, 0x7, 0x44, 0x2, 0x12, 0x3, 0x2, 0x2, 0x2, 
-    0x4, 0x1c, 0x3, 0x2, 0x2, 0x2, 0x6, 0x2e, 0x3, 0x2, 0x2, 0x2, 0x8, 0x31, 
-    0x3, 0x2, 0x2, 0x2, 0xa, 0x35, 0x3, 0x2, 0x2, 0x2, 0xc, 0x3c, 0x3, 0x2, 
-    0x2, 0x2, 0xe, 0x40, 0x3, 0x2, 0x2, 0x2, 0x10, 0x42, 0x3, 0x2, 0x2, 
-    0x2, 0x12, 0x19, 0x5, 0x4, 0x3, 0x2, 0x13, 0x14, 0x7, 0x8, 0x2, 0x2, 
-    0x14, 0x15, 0x7, 0x9, 0x2, 0x2, 0x15, 0x16, 0x7, 0x8, 0x2, 0x2, 0x16, 
-    0x18, 0x5, 0x4, 0x3, 0x2, 0x17, 0x13, 0x3, 0x2, 0x2, 0x2, 0x18, 0x1b, 
-    0x3, 0x2, 0x2, 0x2, 0x19, 0x17, 0x3, 0x2, 0x2, 0x2, 0x19, 0x1a, 0x3, 
-    0x2, 0x2, 0x2, 0x1a, 0x3, 0x3, 0x2, 0x2, 0x2, 0x1b, 0x19, 0x3, 0x2, 
-    0x2, 0x2, 0x1c, 0x21, 0x5, 0x8, 0x5, 0x2, 0x1d, 0x1e, 0x7, 0x8, 0x2, 
-    0x2, 0x1e, 0x20, 0x5, 0x6, 0x4, 0x2, 0x1f, 0x1d, 0x3, 0x2, 0x2, 0x2, 
-    0x20, 0x23, 0x3, 0x2, 0x2, 0x2, 0x21, 0x1f, 0x3, 0x2, 0x2, 0x2, 0x21, 
-    0x22, 0x3, 0x2, 0x2, 0x2, 0x22, 0x5, 0x3, 0x2, 0x2, 0x2, 0x23, 0x21, 
-    0x3, 0x2, 0x2, 0x2, 0x24, 0x2f, 0x5, 0xa, 0x6, 0x2, 0x25, 0x28, 0x5, 
-    0xe, 0x8, 0x2, 0x26, 0x28, 0x5, 0x10, 0x9, 0x2, 0x27, 0x25, 0x3, 0x2, 
-    0x2, 0x2, 0x27, 0x26, 0x3, 0x2, 0x2, 0x2, 0x28, 0x29, 0x3, 0x2, 0x2, 
-    0x2, 0x29, 0x2a, 0x7, 0x8, 0x2, 0x2, 0x2a, 0x2c, 0x3, 0x2, 0x2, 0x2, 
-    0x2b, 0x27, 0x3, 0x2, 0x2, 0x2, 0x2b, 0x2c, 0x3, 0x2, 0x2, 0x2, 0x2c, 
-    0x2d, 0x3, 0x2, 0x2, 0x2, 0x2d, 0x2f, 0x5, 0xc, 0x7, 0x2, 0x2e, 0x24, 
-    0x3, 0x2, 0x2, 0x2, 0x2e, 0x2b, 0x3, 0x2, 0x2, 0x2, 0x2f, 0x7, 0x3, 
-    0x2, 0x2, 0x2, 0x30, 0x32, 0x7, 0xa, 0x2, 0x2, 0x31, 0x30, 0x3, 0x2, 
-    0x2, 0x2, 0x32, 0x33, 0x3, 0x2, 0x2, 0x2, 0x33, 0x31, 0x3, 0x2, 0x2, 
-    0x2, 0x33, 0x34, 0x3, 0x2, 0x2, 0x2, 0x34, 0x9, 0x3, 0x2, 0x2, 0x2, 
-    0x35, 0x37, 0x7, 0x3, 0x2, 0x2, 0x36, 0x38, 0x9, 0x2, 0x2, 0x2, 0x37, 
-    0x36, 0x3, 0x2, 0x2, 0x2, 0x38, 0x39, 0x3, 0x2, 0x2, 0x2, 0x39, 0x37, 
-    0x3, 0x2, 0x2, 0x2, 0x39, 0x3a, 0x3, 0x2, 0x2, 0x2, 0x3a, 0xb, 0x3, 
-    0x2, 0x2, 0x2, 0x3b, 0x3d, 0x9, 0x3, 0x2, 0x2, 0x3c, 0x3b, 0x3, 0x2, 
-    0x2, 0x2, 0x3d, 0x3e, 0x3, 0x2, 0x2, 0x2, 0x3e, 0x3c, 0x3, 0x2, 0x2, 
-    0x2, 0x3e, 0x3f, 0x3, 0x2, 0x2, 0x2, 0x3f, 0xd, 0x3, 0x2, 0x2, 0x2, 
-    0x40, 0x41, 0x7, 0x4, 0x2, 0x2, 0x41, 0xf, 0x3, 0x2, 0x2, 0x2, 0x42, 
-    0x43, 0x9, 0x4, 0x2, 0x2, 0x43, 0x11, 0x3, 0x2, 0x2, 0x2, 0xa, 0x19, 
-    0x21, 0x27, 0x2b, 0x2e, 0x33, 0x39, 0x3e, 
+    0x8, 0x9, 0x8, 0x3, 0x2, 0x3, 0x2, 0x3, 0x2, 0x3, 0x2, 0x3, 0x2, 0x7, 
+    0x2, 0x16, 0xa, 0x2, 0xc, 0x2, 0xe, 0x2, 0x19, 0xb, 0x2, 0x3, 0x3, 0x3, 
+    0x3, 0x3, 0x3, 0x7, 0x3, 0x1e, 0xa, 0x3, 0xc, 0x3, 0xe, 0x3, 0x21, 0xb, 
+    0x3, 0x3, 0x4, 0x3, 0x4, 0x5, 0x4, 0x25, 0xa, 0x4, 0x3, 0x4, 0x3, 0x4, 
+    0x5, 0x4, 0x29, 0xa, 0x4, 0x3, 0x4, 0x3, 0x4, 0x3, 0x5, 0x3, 0x5, 0x3, 
+    0x6, 0x3, 0x6, 0x3, 0x7, 0x3, 0x7, 0x3, 0x8, 0x3, 0x8, 0x3, 0x8, 0x2, 
+    0x2, 0x9, 0x2, 0x4, 0x6, 0x8, 0xa, 0xc, 0xe, 0x2, 0x3, 0x3, 0x2, 0x4, 
+    0x6, 0x31, 0x2, 0x10, 0x3, 0x2, 0x2, 0x2, 0x4, 0x1a, 0x3, 0x2, 0x2, 
+    0x2, 0x6, 0x28, 0x3, 0x2, 0x2, 0x2, 0x8, 0x2c, 0x3, 0x2, 0x2, 0x2, 0xa, 
+    0x2e, 0x3, 0x2, 0x2, 0x2, 0xc, 0x30, 0x3, 0x2, 0x2, 0x2, 0xe, 0x32, 
+    0x3, 0x2, 0x2, 0x2, 0x10, 0x17, 0x5, 0x4, 0x3, 0x2, 0x11, 0x12, 0x7, 
+    0x9, 0x2, 0x2, 0x12, 0x13, 0x7, 0x8, 0x2, 0x2, 0x13, 0x14, 0x7, 0x9, 
+    0x2, 0x2, 0x14, 0x16, 0x5, 0x4, 0x3, 0x2, 0x15, 0x11, 0x3, 0x2, 0x2, 
+    0x2, 0x16, 0x19, 0x3, 0x2, 0x2, 0x2, 0x17, 0x15, 0x3, 0x2, 0x2, 0x2, 
+    0x17, 0x18, 0x3, 0x2, 0x2, 0x2, 0x18, 0x3, 0x3, 0x2, 0x2, 0x2, 0x19, 
+    0x17, 0x3, 0x2, 0x2, 0x2, 0x1a, 0x1f, 0x5, 0x8, 0x5, 0x2, 0x1b, 0x1c, 
+    0x7, 0x9, 0x2, 0x2, 0x1c, 0x1e, 0x5, 0x6, 0x4, 0x2, 0x1d, 0x1b, 0x3, 
+    0x2, 0x2, 0x2, 0x1e, 0x21, 0x3, 0x2, 0x2, 0x2, 0x1f, 0x1d, 0x3, 0x2, 
+    0x2, 0x2, 0x1f, 0x20, 0x3, 0x2, 0x2, 0x2, 0x20, 0x5, 0x3, 0x2, 0x2, 
+    0x2, 0x21, 0x1f, 0x3, 0x2, 0x2, 0x2, 0x22, 0x25, 0x5, 0xc, 0x7, 0x2, 
+    0x23, 0x25, 0x5, 0xe, 0x8, 0x2, 0x24, 0x22, 0x3, 0x2, 0x2, 0x2, 0x24, 
+    0x23, 0x3, 0x2, 0x2, 0x2, 0x25, 0x26, 0x3, 0x2, 0x2, 0x2, 0x26, 0x27, 
+    0x7, 0x9, 0x2, 0x2, 0x27, 0x29, 0x3, 0x2, 0x2, 0x2, 0x28, 0x24, 0x3, 
+    0x2, 0x2, 0x2, 0x28, 0x29, 0x3, 0x2, 0x2, 0x2, 0x29, 0x2a, 0x3, 0x2, 
+    0x2, 0x2, 0x2a, 0x2b, 0x5, 0xa, 0x6, 0x2, 0x2b, 0x7, 0x3, 0x2, 0x2, 
+    0x2, 0x2c, 0x2d, 0x7, 0x7, 0x2, 0x2, 0x2d, 0x9, 0x3, 0x2, 0x2, 0x2, 
+    0x2e, 0x2f, 0x7, 0x7, 0x2, 0x2, 0x2f, 0xb, 0x3, 0x2, 0x2, 0x2, 0x30, 
+    0x31, 0x7, 0x3, 0x2, 0x2, 0x31, 0xd, 0x3, 0x2, 0x2, 0x2, 0x32, 0x33, 
+    0x9, 0x2, 0x2, 0x2, 0x33, 0xf, 0x3, 0x2, 0x2, 0x2, 0x6, 0x17, 0x1f, 
+    0x24, 0x28, 
   };
 
   atn::ATNDeserializer deserializer;

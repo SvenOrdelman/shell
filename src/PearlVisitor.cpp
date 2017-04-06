@@ -9,10 +9,8 @@
 int file_descriptor;
 
 std::string program;
-std::string flag;
 std::string parameter;
 
-std::list<std::string> flags;
 std::list<std::string> parameters;
 
 bool pipeline;
@@ -80,11 +78,6 @@ antlrcpp::Any PearlVisitor::visitCommand(ShellGrammarParser::CommandContext *ctx
 antlrcpp::Any PearlVisitor::visitProgram(ShellGrammarParser::ProgramContext *ctx) {
     program = ctx->getText();
     return ShellGrammarBaseVisitor::visitProgram(ctx);
-}
-
-antlrcpp::Any PearlVisitor::visitFlag(ShellGrammarParser::FlagContext *ctx) {
-//    std::cout << "Flag: " << ctx->getText() << std::endl;
-    return ShellGrammarBaseVisitor::visitFlag(ctx);
 }
 
 antlrcpp::Any PearlVisitor::visitParameter(ShellGrammarParser::ParameterContext *ctx) {

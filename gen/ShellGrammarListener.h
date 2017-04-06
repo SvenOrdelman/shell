@@ -26,9 +26,6 @@ public:
   virtual void enterProgram(ShellGrammarParser::ProgramContext *ctx) = 0;
   virtual void exitProgram(ShellGrammarParser::ProgramContext *ctx) = 0;
 
-  virtual void enterFlag(ShellGrammarParser::FlagContext *ctx) = 0;
-  virtual void exitFlag(ShellGrammarParser::FlagContext *ctx) = 0;
-
   virtual void enterParameter(ShellGrammarParser::ParameterContext *ctx) = 0;
   virtual void exitParameter(ShellGrammarParser::ParameterContext *ctx) = 0;
 

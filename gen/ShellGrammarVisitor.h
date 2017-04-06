@@ -27,8 +27,6 @@ public:
 
     virtual antlrcpp::Any visitProgram(ShellGrammarParser::ProgramContext *context) = 0;
 
-    virtual antlrcpp::Any visitFlag(ShellGrammarParser::FlagContext *context) = 0;
-
     virtual antlrcpp::Any visitParameter(ShellGrammarParser::ParameterContext *context) = 0;
 
     virtual antlrcpp::Any visitInput(ShellGrammarParser::InputContext *context) = 0;

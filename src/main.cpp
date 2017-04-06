@@ -11,7 +11,7 @@ const std::string get_working_directory();
 
 int main() {
     for(;;) {
-        std::cout << get_working_directory() << " $ ";
+        std::cout << "\n" << get_working_directory() << " $ ";
         std::cout.flush();
 
         std::string line;

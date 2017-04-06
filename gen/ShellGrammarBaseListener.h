@@ -28,9 +28,6 @@ public:
   virtual void enterProgram(ShellGrammarParser::ProgramContext * /*ctx*/) override { }
   virtual void exitProgram(ShellGrammarParser::ProgramContext * /*ctx*/) override { }
 
-  virtual void enterFlag(ShellGrammarParser::FlagContext * /*ctx*/) override { }
-  virtual void exitFlag(ShellGrammarParser::FlagContext * /*ctx*/) override { }
-
   virtual void enterParameter(ShellGrammarParser::ParameterContext * /*ctx*/) override { }
   virtual void exitParameter(ShellGrammarParser::ParameterContext * /*ctx*/) override { }
 

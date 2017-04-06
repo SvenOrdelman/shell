@@ -31,10 +31,6 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitFlag(ShellGrammarParser::FlagContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
   virtual antlrcpp::Any visitParameter(ShellGrammarParser::ParameterContext *ctx) override {
     return visitChildren(ctx);
   }

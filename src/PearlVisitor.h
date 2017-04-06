@@ -16,8 +16,6 @@ public:
 
     antlrcpp::Any visitProgram(ShellGrammarParser::ProgramContext *ctx) override;
 
-    antlrcpp::Any visitFlag(ShellGrammarParser::FlagContext *ctx) override;
-
     antlrcpp::Any visitParameter(ShellGrammarParser::ParameterContext *ctx) override;
 
     antlrcpp::Any visitExtra(ShellGrammarParser::ExtraContext *ctx) override;
