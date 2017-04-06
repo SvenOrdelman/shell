@@ -25,12 +25,6 @@ public:
   virtual void enterExtra(ShellGrammarParser::ExtraContext * /*ctx*/) override { }
   virtual void exitExtra(ShellGrammarParser::ExtraContext * /*ctx*/) override { }
 
-  virtual void enterProgram(ShellGrammarParser::ProgramContext * /*ctx*/) override { }
-  virtual void exitProgram(ShellGrammarParser::ProgramContext * /*ctx*/) override { }
-
-  virtual void enterParameter(ShellGrammarParser::ParameterContext * /*ctx*/) override { }
-  virtual void exitParameter(ShellGrammarParser::ParameterContext * /*ctx*/) override { }
-
   virtual void enterInput(ShellGrammarParser::InputContext * /*ctx*/) override { }
   virtual void exitInput(ShellGrammarParser::InputContext * /*ctx*/) override { }
 

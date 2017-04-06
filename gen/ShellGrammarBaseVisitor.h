@@ -27,14 +27,6 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitProgram(ShellGrammarParser::ProgramContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual antlrcpp::Any visitParameter(ShellGrammarParser::ParameterContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
   virtual antlrcpp::Any visitInput(ShellGrammarParser::InputContext *ctx) override {
     return visitChildren(ctx);
   }

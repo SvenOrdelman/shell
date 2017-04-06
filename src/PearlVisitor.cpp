@@ -6,12 +6,15 @@
 #include <wait.h>
 #include "PearlVisitor.h"
 
+std::string bin = "/bin/";
+
 int file_descriptor;
 
 std::string program;
 std::string parameter;
 
 std::list<std::string> parameters;
+std::list<char *[]> commands;
 
 bool pipeline;
 int direction = 0;
@@ -19,15 +22,28 @@ int direction = 0;
 int change_working_directory(std::list<std::string>* list);
 
 antlrcpp::Any PearlVisitor::visitLine(ShellGrammarParser::LineContext *ctx) {
-//    std::cout << "Line: " << ctx->getText() << std::endl;
 
     antlrcpp::Any any = visitChildren(ctx);
+
+    for (std::list<char *[]>::const_iterator i = commands.cbegin(); i != commands.cend(); ++i)
+    {
+        int pid = fork();
+        // child
+        if (pid == 0)
+        {
+            // execute the program
+            execvp((*i)[0], (*i));
+            std::cerr << "No program '" << program << "' found." << std::endl;
+            exit(0);
+        }
+    }
+
+    commands.clear();
 
     return any;
 }
 
 antlrcpp::Any PearlVisitor::visitCommand(ShellGrammarParser::CommandContext *ctx) {
-//    std::cout << "Command: " << ctx->getText() << std::endl;
 
     antlrcpp::Any any = visitChildren(ctx);
 
@@ -40,52 +56,22 @@ antlrcpp::Any PearlVisitor::visitCommand(ShellGrammarParser::CommandContext *ctx
         return any;
     }
 
-    int pid = fork();
-    std::string bin = "/bin/";
+    // get the whole command
+    char *args[parameters.size() + 2];
+    args[0] = (char *) bin.append(program).c_str();
 
-    if (pid == 0)
+    int c = 0;
+    for (std::list<std::string>::const_iterator i = parameters.cbegin(); i != parameters.cend(); ++i)
     {
-        if (parameters.size() == 0)
-        {
-            execl(bin.append(program).c_str(), program.c_str(), NULL);
-        }
-        else
-        {
-            char *args[parameters.size() + 2];
-            args[0] = (char *) bin.append(program).c_str();
-
-            int c = 0;
-            for (std::list<std::string>::const_iterator i = parameters.cbegin(); i != parameters.cend(); ++i)
-            {
-                ++c;
-                args[c] = (char *) i->c_str();
-            }
-
-            args[c + 1] = NULL;
-
-            execvp(args[0], args);
-        }
-        std::cerr << "No program '" << program << "' found." << std::endl;
-        exit(0);
+        ++c;
+        args[c] = (char *) i->c_str();
     }
-
-    waitpid(pid, 0, 0);
+    args[c + 1] = NULL;
     parameters.clear();
 
+    commands.push_back(args);
+
     return any;
-}
-
-antlrcpp::Any PearlVisitor::visitProgram(ShellGrammarParser::ProgramContext *ctx) {
-    program = ctx->getText();
-    return ShellGrammarBaseVisitor::visitProgram(ctx);
-}
-
-antlrcpp::Any PearlVisitor::visitParameter(ShellGrammarParser::ParameterContext *ctx) {
-    parameter = ctx->getText();
-
-    parameters.push_back(parameter);
-
-    return ShellGrammarBaseVisitor::visitParameter(ctx);
 }
 
 antlrcpp::Any PearlVisitor::visitExtra(ShellGrammarParser::ExtraContext *ctx) {

@@ -1,10 +1,8 @@
 grammar ShellGrammar;
 
 line: command (WS PIPELINE WS command)*;
-command: program (WS extra)*;
-extra: ((input | output) WS)? parameter;
-program: WORD;
-parameter: WORD;
+command: WORD (WS extra)*;
+extra: ((input | output) WS)? WORD;
 
 input: '<';
 output: '>'

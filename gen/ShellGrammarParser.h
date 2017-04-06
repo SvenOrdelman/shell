@@ -16,8 +16,7 @@ public:
   };
 
   enum {
-    RuleLine = 0, RuleCommand = 1, RuleExtra = 2, RuleProgram = 3, RuleParameter = 4, 
-    RuleInput = 5, RuleOutput = 6
+    RuleLine = 0, RuleCommand = 1, RuleExtra = 2, RuleInput = 3, RuleOutput = 4
   };
 
   ShellGrammarParser(antlr4::TokenStream *input);
@@ -33,8 +32,6 @@ public:
   class LineContext;
   class CommandContext;
   class ExtraContext;
-  class ProgramContext;
-  class ParameterContext;
   class InputContext;
   class OutputContext; 
 
@@ -62,7 +59,7 @@ public:
   public:
     CommandContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    ProgramContext *program();
+    antlr4::tree::TerminalNode *WORD();
     std::vector<antlr4::tree::TerminalNode *> WS();
     antlr4::tree::TerminalNode* WS(size_t i);
     std::vector<ExtraContext *> extra();
@@ -81,7 +78,7 @@ public:
   public:
     ExtraContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    ParameterContext *parameter();
+    antlr4::tree::TerminalNode *WORD();
     antlr4::tree::TerminalNode *WS();
     InputContext *input();
     OutputContext *output();
@@ -94,36 +91,6 @@ public:
   };
 
   ExtraContext* extra();
-
-  class  ProgramContext : public antlr4::ParserRuleContext {
-  public:
-    ProgramContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *WORD();
-
-    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
-    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  ProgramContext* program();
-
-  class  ParameterContext : public antlr4::ParserRuleContext {
-  public:
-    ParameterContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *WORD();
-
-    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
-    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  ParameterContext* parameter();
 
   class  InputContext : public antlr4::ParserRuleContext {
   public:
