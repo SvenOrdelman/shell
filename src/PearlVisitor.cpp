@@ -24,40 +24,47 @@ antlrcpp::Any PearlVisitor::visitLine(ShellGrammarParser::LineContext *ctx) {
 
     // visit all commands one by one from the end to the front
     std::vector<antlr4::tree::ParseTree*> children = ctx->children;
-    int l = children.size();
-//    for (std::vector<antlr4::tree::ParseTree*>::const_reverse_iterator i = children.crbegin(); i != children.crend(); ++i)
-//    {
-//        std::vector<std::string> args = visit(*i);
-//
-        int pid = fork();
-        // child
-        if (pid == 0)
-        {
-            l --;
-            if(l!=0){
-                int pid = fork();
 
+    int c = (int) children.size();
+    for (std::vector<antlr4::tree::ParseTree*>::const_reverse_iterator i = children.crbegin(); i != children.crend(); ++i)
+    {
+        --c;
+        std::vector<std::string> args = visit(*i);
+
+        int pid = fork();
+        // first command
+        if (pid == 0) {
+            // if not the last command
+            if (c > 0) {
+                int pid_c = fork();
+
+                if (pid_c == 0) {
+                    // second command
+                    continue;
+                }
             }
 
+            // get the arguments
             char *cargs[args.size() + 1];
-            int c = 0;
+            int a = 0;
             for (std::vector<std::string>::const_iterator j = args.cbegin(); j != args.cend(); ++j)
             {
-                cargs[c] = (char *) (*j).c_str();
-                ++c;
+                cargs[a] = (char *) (*j).c_str();
+                ++a;
             }
-            cargs[c] = NULL;
+            cargs[a] = NULL;
 
             // execute the program
             execvp(cargs[0], cargs);
             std::cerr << "No program '" << program << "' found." << std::endl;
             exit(0);
+            // unreachable
         }
 
         // parent
         waitpid(pid, 0, 0);
-        //break;
-   // }
+        break;
+    }
 
     return true;
 }
