@@ -1,6 +1,6 @@
 grammar ShellGrammar;
 
-line: command (WS PIPELINE WS command)*;
+line: c+=command (WS '|' WS c+=command)*;
 command: WORD (WS extra)*;
 extra: ((input | output) WS)? WORD;
 
@@ -11,5 +11,4 @@ output: '>'
     ;
 
 WORD: (~[ \t\r\n])+;
-PIPELINE: '|';
 WS: [ \t\r\n]+;

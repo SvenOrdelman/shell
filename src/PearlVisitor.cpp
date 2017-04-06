@@ -14,7 +14,6 @@ std::string program;
 std::string parameter;
 
 std::list<std::string> parameters;
-std::list<char *[]> commands;
 
 bool pipeline;
 int direction = 0;
@@ -23,24 +22,44 @@ int change_working_directory(std::list<std::string>* list);
 
 antlrcpp::Any PearlVisitor::visitLine(ShellGrammarParser::LineContext *ctx) {
 
-    antlrcpp::Any any = visitChildren(ctx);
-
-    for (std::list<char *[]>::const_iterator i = commands.cbegin(); i != commands.cend(); ++i)
-    {
+    // visit all commands one by one from the end to the front
+    std::vector<antlr4::tree::ParseTree*> children = ctx->children;
+    int l = children.size();
+//    for (std::vector<antlr4::tree::ParseTree*>::const_reverse_iterator i = children.crbegin(); i != children.crend(); ++i)
+//    {
+//        std::vector<std::string> args = visit(*i);
+//
         int pid = fork();
         // child
         if (pid == 0)
         {
+            l --;
+            if(l!=0){
+                int pid = fork();
+
+            }
+
+            char *cargs[args.size() + 1];
+            int c = 0;
+            for (std::vector<std::string>::const_iterator j = args.cbegin(); j != args.cend(); ++j)
+            {
+                cargs[c] = (char *) (*j).c_str();
+                ++c;
+            }
+            cargs[c] = NULL;
+
             // execute the program
-            execvp((*i)[0], (*i));
+            execvp(cargs[0], cargs);
             std::cerr << "No program '" << program << "' found." << std::endl;
             exit(0);
         }
-    }
 
-    commands.clear();
+        // parent
+        waitpid(pid, 0, 0);
+        //break;
+   // }
 
-    return any;
+    return true;
 }
 
 antlrcpp::Any PearlVisitor::visitCommand(ShellGrammarParser::CommandContext *ctx) {
@@ -57,21 +76,16 @@ antlrcpp::Any PearlVisitor::visitCommand(ShellGrammarParser::CommandContext *ctx
     }
 
     // get the whole command
-    char *args[parameters.size() + 2];
-    args[0] = (char *) bin.append(program).c_str();
-
-    int c = 0;
+    std::vector<std::string> args;
+    args.reserve(parameters.size() + 2);
+    args.push_back(bin.append(program).c_str());
     for (std::list<std::string>::const_iterator i = parameters.cbegin(); i != parameters.cend(); ++i)
     {
-        ++c;
-        args[c] = (char *) i->c_str();
+        args.push_back(*i);
     }
-    args[c + 1] = NULL;
     parameters.clear();
 
-    commands.push_back(args);
-
-    return any;
+    return args;
 }
 
 antlrcpp::Any PearlVisitor::visitExtra(ShellGrammarParser::ExtraContext *ctx) {

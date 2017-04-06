@@ -12,7 +12,7 @@
 class  ShellGrammarParser : public antlr4::Parser {
 public:
   enum {
-    T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, WORD = 5, PIPELINE = 6, WS = 7
+    T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, WORD = 6, WS = 7
   };
 
   enum {
@@ -37,14 +37,14 @@ public:
 
   class  LineContext : public antlr4::ParserRuleContext {
   public:
+    ShellGrammarParser::CommandContext *commandContext = nullptr;;
+    std::vector<CommandContext *> c;;
     LineContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     std::vector<CommandContext *> command();
     CommandContext* command(size_t i);
     std::vector<antlr4::tree::TerminalNode *> WS();
     antlr4::tree::TerminalNode* WS(size_t i);
-    std::vector<antlr4::tree::TerminalNode *> PIPELINE();
-    antlr4::tree::TerminalNode* PIPELINE(size_t i);
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
