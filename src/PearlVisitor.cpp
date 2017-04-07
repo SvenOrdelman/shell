@@ -19,7 +19,7 @@ vector<string> parameters;
 antlrcpp::Any PearlVisitor::visitLine(ShellGrammarParser::LineContext *ctx)
 {
     // get all the commands
-    vector<antlr4::tree::ParseTree*> children = ctx->children;
+    vector<antlr4::tree::ParseTree *> children = ctx->children;
 
     int pid = fork();
     if (pid == 0)
@@ -34,14 +34,15 @@ antlrcpp::Any PearlVisitor::visitLine(ShellGrammarParser::LineContext *ctx)
     return true;
 }
 
-void PearlVisitor::execute(vector<antlr4::tree::ParseTree*>* programs)
+void PearlVisitor::execute(vector<antlr4::tree::ParseTree *> *programs)
 {
 
     // let the command gather the info
     string &program = visit(programs->back()).as<string>();
     programs->pop_back();
 
-    if (program == "cd") {
+    if (program == "cd")
+    {
         int result = change_working_directory(&parameters);
         if (result == -1)
         {
@@ -51,11 +52,27 @@ void PearlVisitor::execute(vector<antlr4::tree::ParseTree*>* programs)
     }
 
     // if this program was not the last program
-    if (programs->size() > 0) {
+    if (programs->size() > 0)
+    {
+        // create a pipe
+        int pipeline[2];
+        pipe(pipeline);
+
         int pid = fork();
-        if (pid == 0) {
+        if (pid == 0)
+        {
+            // let the write side be connected to the first command
+            dup2(pipeline[1], 1);
+            close(pipeline[0]);
+            close(pipeline[1]);
+
             parameters.clear();
             execute(programs);
+        } else {
+            // let the read side be connected to the second command
+            dup2(pipeline[0], 0);
+            close(pipeline[0]);
+            close(pipeline[1]);
         }
     }
 
@@ -102,10 +119,11 @@ antlrcpp::Any PearlVisitor::visitOutput(ShellGrammarParser::OutputContext *ctx)
     return ShellGrammarBaseVisitor::visitOutput(ctx);
 }
 
-int PearlVisitor::change_working_directory(vector<string>* ls)
+int PearlVisitor::change_working_directory(vector<string> *ls)
 {
     int result = -1;
-    if (ls->size() > 0) {
+    if (ls->size() > 0)
+    {
         result = chdir(ls->back().c_str());
         ls->pop_back();
     }
