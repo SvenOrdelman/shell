@@ -1,8 +1,8 @@
 grammar ShellGrammar;
 
 line: c+=command (WS '|' WS c+=command)*;
-command: WORD (WS extra)*;
-extra: ((input | output) WS)? WORD;
+command: p=WORD (WS extra)*;
+extra: ((input | output) WS)? p=WORD;
 
 input: '<';
 output: '>'

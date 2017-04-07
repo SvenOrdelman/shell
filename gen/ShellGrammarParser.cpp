@@ -182,7 +182,7 @@ ShellGrammarParser::CommandContext* ShellGrammarParser::command() {
     size_t alt;
     enterOuterAlt(_localctx, 1);
     setState(20);
-    match(ShellGrammarParser::WORD);
+    dynamic_cast<CommandContext *>(_localctx)->p = match(ShellGrammarParser::WORD);
     setState(25);
     _errHandler->sync(this);
     alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 1, _ctx);
@@ -298,7 +298,7 @@ ShellGrammarParser::ExtraContext* ShellGrammarParser::extra() {
       match(ShellGrammarParser::WS);
     }
     setState(36);
-    match(ShellGrammarParser::WORD);
+    dynamic_cast<ExtraContext *>(_localctx)->p = match(ShellGrammarParser::WORD);
    
   }
   catch (RecognitionException &e) {
