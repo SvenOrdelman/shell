@@ -3,7 +3,7 @@
 //
 
 #include <unistd.h>
-//#include <wait.h>
+#include <wait.h>
 #include "PearlVisitor.h"
 
 using namespace std;
@@ -11,26 +11,36 @@ using namespace std;
 // program directory
 const string bin = "/bin/";
 
-string program;
-string parameter;
-
 vector<string> parameters;
 
 antlrcpp::Any PearlVisitor::visitLine(ShellGrammarParser::LineContext *ctx)
 {
     // get all the commands
-    vector<antlr4::tree::ParseTree *> children = ctx->children;
+    vector<antlr4::tree::ParseTree *> programs = ctx->children;
 
-    int pid = fork();
-    if (pid == 0)
+    // check to see if it is a cd before we do anything else
+    string &program = visit(programs.back()).as<string>();
+
+    if (program == "cd")
     {
-        // execute the program (or more)
-        execute(&children);
+        int result = change_working_directory(&parameters);
+        if (result == -1)
+        {
+            cerr << "Directory not found." << endl;
+        }
     }
-
-    // shell thread
-    waitpid(pid, 0, 0);
-
+    else
+    {
+        // other program than cd
+        int pid = fork();
+        if (pid == 0) {
+            // execute the program (or more)
+            execute(&programs);
+        } else {
+            // shell thread
+            waitpid(pid, 0, 0);
+        }
+    }
     return true;
 }
 
@@ -41,15 +51,7 @@ void PearlVisitor::execute(vector<antlr4::tree::ParseTree *> *programs)
     string &program = visit(programs->back()).as<string>();
     programs->pop_back();
 
-    if (program == "cd")
-    {
-        int result = change_working_directory(&parameters);
-        if (result == -1)
-        {
-            cerr << "Directory not found." << endl;
-        }
-        return;
-    }
+    cout << "program: " << program << " programs size: " << programs->size() << " params size: " << parameters.size() << endl;
 
     // if this program was not the last program
     if (programs->size() > 0)
@@ -58,9 +60,12 @@ void PearlVisitor::execute(vector<antlr4::tree::ParseTree *> *programs)
         int pipeline[2];
         pipe(pipeline);
 
+        cout << "pipeline! 0: " << pipeline[0] << " 1: " << pipeline[1] << endl;
+
         int pid = fork();
         if (pid == 0)
         {
+            cout << "write side set!" << endl;
             // let the write side be connected to the first command
             dup2(pipeline[1], 1);
             close(pipeline[0]);
@@ -69,6 +74,8 @@ void PearlVisitor::execute(vector<antlr4::tree::ParseTree *> *programs)
             parameters.clear();
             execute(programs);
         } else {
+            cout << "read side set!" << endl;
+
             // let the read side be connected to the second command
             dup2(pipeline[0], 0);
             close(pipeline[0]);
@@ -109,13 +116,13 @@ antlrcpp::Any PearlVisitor::visitExtra(ShellGrammarParser::ExtraContext *ctx)
 
 antlrcpp::Any PearlVisitor::visitInput(ShellGrammarParser::InputContext *ctx)
 {
-    cout << "Input?: " << parameter << endl;
+    cout << "Input?: " << endl;
     return ShellGrammarBaseVisitor::visitInput(ctx);
 }
 
 antlrcpp::Any PearlVisitor::visitOutput(ShellGrammarParser::OutputContext *ctx)
 {
-    cout << "Output?: " << parameter << endl;
+    cout << "Output?: " << endl;
     return ShellGrammarBaseVisitor::visitOutput(ctx);
 }
 
