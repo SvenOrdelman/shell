@@ -9,8 +9,7 @@
 using namespace std;
 
 // program directory
-const string bin = "/bin/";
-const string usrbin = "/usr/bin/";
+const string paths[] {"/bin/", "/usr/bin/"};
 
 vector<string> parameters;
 string program;
@@ -98,14 +97,14 @@ void PearlVisitor::execute(vector<antlr4::tree::ParseTree *> *programs)
     cargs[a] = NULL;
 
     // try to execute the program
-    string path = bin + program;
-    cout << "path: " << path << endl;
-
-    cargs[0] = (char *) path.c_str();
-    execvp(cargs[0], cargs);
-    path = usrbin + program;
-    cargs[0] = (char *) path.c_str();
-    execvp(cargs[0], cargs);
+    string path;
+    for (string p : paths)
+    {
+        path = p + program;
+        cout << "path: " << path << endl;
+        cargs[0] = (char *) path.c_str();
+        execvp(cargs[0], cargs);
+    }
 
     cerr << "No program '" << program << "' found." << endl;
     exit(0);
