@@ -19,6 +19,10 @@ public:
     antlrcpp::Any visitInput(ShellGrammarParser::InputContext *ctx) override;
 
     antlrcpp::Any visitOutput(ShellGrammarParser::OutputContext *ctx) override;
+
+    int change_working_directory(std::vector<std::string>* list);
+
+    void execute(std::vector<antlr4::tree::ParseTree*>* programs);
 };
 
 
