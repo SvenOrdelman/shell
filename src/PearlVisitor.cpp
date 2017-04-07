@@ -10,8 +10,10 @@ using namespace std;
 
 // program directory
 const string bin = "/bin/";
+const string usrbin = "/usr/bin/";
 
 vector<string> parameters;
+string program;
 
 antlrcpp::Any PearlVisitor::visitLine(ShellGrammarParser::LineContext *ctx)
 {
@@ -19,7 +21,7 @@ antlrcpp::Any PearlVisitor::visitLine(ShellGrammarParser::LineContext *ctx)
     vector<antlr4::tree::ParseTree *> programs = ctx->children;
 
     // check to see if it is a cd before we do anything else
-    string &program = visit(programs.back()).as<string>();
+    visit(programs.back());
 
     if (program == "cd")
     {
@@ -32,6 +34,8 @@ antlrcpp::Any PearlVisitor::visitLine(ShellGrammarParser::LineContext *ctx)
     else
     {
         // other program than cd
+        parameters.clear();
+
         int pid = fork();
         if (pid == 0) {
             // execute the program (or more)
@@ -41,14 +45,14 @@ antlrcpp::Any PearlVisitor::visitLine(ShellGrammarParser::LineContext *ctx)
             waitpid(pid, 0, 0);
         }
     }
-    return true;
+    return nullptr;
 }
 
 void PearlVisitor::execute(vector<antlr4::tree::ParseTree *> *programs)
 {
 
     // let the command gather the info
-    string &program = visit(programs->back()).as<string>();
+    visit(programs->back());
     programs->pop_back();
 
     cout << "program: " << program << " programs size: " << programs->size() << " params size: " << parameters.size() << endl;
@@ -83,21 +87,26 @@ void PearlVisitor::execute(vector<antlr4::tree::ParseTree *> *programs)
         }
     }
 
-    string path = bin + program;
-
     // get the arguments
     char *cargs[parameters.size() + 2];
-    int a = 0;
-    cargs[a] = (char *) path.c_str();
+    int a = 1;
     for (vector<string>::const_iterator j = parameters.cbegin(); j != parameters.cend(); ++j)
     {
-        ++a;
         cargs[a] = (char *) (*j).c_str();
+        ++a;
     }
-    cargs[a + 1] = NULL;
+    cargs[a] = NULL;
 
-    // execute the program
+    // try to execute the program
+    string path = bin + program;
+    cout << "path: " << path << endl;
+
+    cargs[0] = (char *) path.c_str();
     execvp(cargs[0], cargs);
+    path = usrbin + program;
+    cargs[0] = (char *) path.c_str();
+    execvp(cargs[0], cargs);
+
     cerr << "No program '" << program << "' found." << endl;
     exit(0);
 }
@@ -105,13 +114,14 @@ void PearlVisitor::execute(vector<antlr4::tree::ParseTree *> *programs)
 antlrcpp::Any PearlVisitor::visitCommand(ShellGrammarParser::CommandContext *ctx)
 {
     visitChildren(ctx);
-    return ctx->p->getText();
+    program = ctx->p->getText();
+    return nullptr;
 }
 
 antlrcpp::Any PearlVisitor::visitExtra(ShellGrammarParser::ExtraContext *ctx)
 {
     parameters.push_back(ctx->p->getText());
-    return ShellGrammarBaseVisitor::visitExtra(ctx);
+    return nullptr;
 }
 
 antlrcpp::Any PearlVisitor::visitInput(ShellGrammarParser::InputContext *ctx)
