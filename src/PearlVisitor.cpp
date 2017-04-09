@@ -4,14 +4,17 @@
 
 #include <unistd.h>
 #include <fcntl.h>
-//#include <wait.h>
+#include <wait.h>
 #include "PearlVisitor.h"
 
 using namespace std;
 
+// program name to execute
 string program;
+// list of parameters for a program
 vector<string> parameters;
 
+// paths to redirect several streams to
 string io_in_path = "";
 string io_out_path = "";
 string io_err_path = "";
@@ -188,9 +191,11 @@ void PearlVisitor::io_in()
 {
     if (io_in_path != "")
     {
+        // READ ONLY and CLOSE AFTER EXECUTION flags
         int file_descriptor_in = open(io_in_path.c_str(), O_RDONLY | O_CLOEXEC);
         if (file_descriptor_in != -1)
         {
+            // redirect std::in to the file descriptor
             dup2(file_descriptor_in, 0);
             close(file_descriptor_in);
         }
@@ -204,9 +209,11 @@ void PearlVisitor::io_out()
 {
     if (io_out_path != "")
     {
-        int file_descriptor_out = open(io_out_path.c_str(), O_WRONLY | O_CREAT | O_CLOEXEC);
+        // WRITE, CREATE, TRUNCATE and CLOSE AFTER EXECUTION flags
+        int file_descriptor_out = open(io_out_path.c_str(), O_WRONLY | O_TRUNC | O_CREAT | O_CLOEXEC);
         if (file_descriptor_out != -1)
         {
+            // redirect std::out to the file descriptor
             dup2(file_descriptor_out, 1);
             close(file_descriptor_out);
         }
@@ -220,9 +227,11 @@ void PearlVisitor::io_err()
 {
     if (io_err_path != "")
     {
-        int file_descriptor_err = open(io_err_path.c_str(), O_WRONLY | O_CREAT | O_CLOEXEC);
+        // WRITE, CREATE, TRUNCATE and CLOSE AFTER EXECUTION flags
+        int file_descriptor_err = open(io_err_path.c_str(), O_WRONLY | O_TRUNC | O_CREAT | O_CLOEXEC);
         if (file_descriptor_err != -1)
         {
+            // redirect std::err to the file descriptor
             dup2(file_descriptor_err, 2);
             close(file_descriptor_err);
         }
@@ -236,9 +245,11 @@ void PearlVisitor::io_add()
 {
     if (io_add_path != "")
     {
+        // WRITE, CREATE, TRUNCATE, APPEND and CLOSE AFTER EXECUTION flags
         int file_descriptor_add = open(io_add_path.c_str(), O_APPEND | O_WRONLY | O_CREAT | O_CLOEXEC);
         if (file_descriptor_add != -1)
         {
+            // redirect std::out to the file descriptor
             dup2(file_descriptor_add, 1);
             close(file_descriptor_add);
         }
