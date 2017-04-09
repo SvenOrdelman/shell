@@ -48,6 +48,7 @@ int main()
             else
             {
                 std::cerr << "Previous command not available." << std::endl;
+                continue;
             }
         }
 
