@@ -14,9 +14,22 @@ std::vector<std::string> history;
 
 int main()
 {
+    chdir("/");
+
+    std::cout << "                                             88" << std::endl;
+    std::cout << "                                             88" << std::endl;
+    std::cout << "                                             88" << std::endl;
+    std::cout << "8b,dPPYba,   ,adPPYba, ,adPPYYba, 8b,dPPYba, 88" << std::endl;
+    std::cout << "88P'    \"8a a8P_____88 \"\"     `Y8 88P'   \"Y8 88" << std::endl;
+    std::cout << "88       d8 8PP\"\"\"\"\"\"\" ,adPPPPP88 88         88" << std::endl;
+    std::cout << "88b,   ,a8\" \"8b,   ,aa 88,    ,88 88         88" << std::endl;
+    std::cout << "88`YbbdP\"'   `\"Ybbd8\"' `\"8bbdP\"Y8 88         88" << std::endl;
+    std::cout << "88" << std::endl;
+    std::cout << "88" << std::endl;
+
     for (;;)
     {
-        std::cout << "\n" << get_working_directory() << " $ ";
+        std::cout << "\n" << get_working_directory() << " § ";
         std::cout.flush();
 
         std::string line;
