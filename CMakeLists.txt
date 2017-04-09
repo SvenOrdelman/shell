@@ -5,7 +5,16 @@ set(CMAKE_CXX_STANDARD 11)
 
 set(SOURCE_FILES
 
-        runtime/src/atn/AbstractPredicateTransition.cpp
+    gen/ShellGrammarBaseVisitor.cpp
+    gen/ShellGrammarBaseVisitor.h
+    gen/ShellGrammarLexer.cpp
+    gen/ShellGrammarLexer.h
+    gen/ShellGrammarParser.cpp
+    gen/ShellGrammarParser.h
+    gen/ShellGrammarVisitor.cpp
+    gen/ShellGrammarVisitor.h
+
+    runtime/src/atn/AbstractPredicateTransition.cpp
     runtime/src/atn/AbstractPredicateTransition.h
     runtime/src/atn/ActionTransition.cpp
     runtime/src/atn/ActionTransition.h
