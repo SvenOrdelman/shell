@@ -7,7 +7,8 @@
 
 #include "../gen/ShellGrammarBaseVisitor.h"
 
-class PearlVisitor : public ShellGrammarBaseVisitor{
+class PearlVisitor : public ShellGrammarBaseVisitor
+{
 
 public:
     antlrcpp::Any visitLine(ShellGrammarParser::LineContext *ctx) override;
@@ -16,13 +17,25 @@ public:
 
     antlrcpp::Any visitExtra(ShellGrammarParser::ExtraContext *ctx) override;
 
-    antlrcpp::Any visitInput(ShellGrammarParser::InputContext *ctx) override;
+    antlrcpp::Any visitIn(ShellGrammarParser::InContext *ctx) override;
 
-    antlrcpp::Any visitOutput(ShellGrammarParser::OutputContext *ctx) override;
+    antlrcpp::Any visitOut(ShellGrammarParser::OutContext *ctx) override;
 
-    int change_working_directory(std::vector<std::string>* list);
+    antlrcpp::Any visitErr(ShellGrammarParser::ErrContext *ctx) override;
 
-    void execute(std::vector<ShellGrammarParser::CommandContext *>* programs);
+    antlrcpp::Any visitAdd(ShellGrammarParser::AddContext *ctx) override;
+
+    int change_working_directory(std::vector<std::string> *list);
+
+    void execute(std::vector<ShellGrammarParser::CommandContext *> *programs);
+
+    void io_in();
+
+    void io_out();
+
+    void io_err();
+
+    void io_add();
 };
 
 

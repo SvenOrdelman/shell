@@ -25,9 +25,13 @@ public:
 
     virtual antlrcpp::Any visitExtra(ShellGrammarParser::ExtraContext *context) = 0;
 
-    virtual antlrcpp::Any visitInput(ShellGrammarParser::InputContext *context) = 0;
+    virtual antlrcpp::Any visitIn(ShellGrammarParser::InContext *context) = 0;
 
-    virtual antlrcpp::Any visitOutput(ShellGrammarParser::OutputContext *context) = 0;
+    virtual antlrcpp::Any visitOut(ShellGrammarParser::OutContext *context) = 0;
+
+    virtual antlrcpp::Any visitErr(ShellGrammarParser::ErrContext *context) = 0;
+
+    virtual antlrcpp::Any visitAdd(ShellGrammarParser::AddContext *context) = 0;
 
 
 };

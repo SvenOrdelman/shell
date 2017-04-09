@@ -3,16 +3,19 @@
 //
 
 #include <unistd.h>
+#include <fcntl.h>
 //#include <wait.h>
 #include "PearlVisitor.h"
 
 using namespace std;
 
-// program directory
-const string paths[] {"/bin/", "/usr/bin/"};
-
-vector<string> parameters;
 string program;
+vector<string> parameters;
+
+string io_in_path = "";
+string io_out_path = "";
+string io_err_path = "";
+string io_add_path = "";
 
 antlrcpp::Any PearlVisitor::visitLine(ShellGrammarParser::LineContext *ctx)
 {
@@ -82,24 +85,25 @@ void PearlVisitor::execute(vector<ShellGrammarParser::CommandContext *> *program
         }
     }
 
+    // set up IO redirects if any
+    io_in();
+    io_out();
+    io_err();
+    io_add();
+
     // get the arguments
-    char *cargs[parameters.size() + 2];
-    int a = 1;
+    char *p_args[parameters.size() + 2];
+    int a = 0;
+    p_args[a] = (char *) program.c_str();
     for (vector<string>::const_iterator j = parameters.cbegin(); j != parameters.cend(); ++j)
     {
-        cargs[a] = (char *) (*j).c_str();
         ++a;
+        p_args[a] = (char *) (*j).c_str();
     }
-    cargs[a] = NULL;
+    p_args[a + 1] = NULL;
 
     // try to execute the program
-    string path;
-    for (string p : paths)
-    {
-        path = p + program;
-        cargs[0] = (char *) path.c_str();
-        execvp(cargs[0], cargs);
-    }
+    execvp(p_args[0], p_args);
 
     cerr << "No program '" << program << "' found." << endl;
     exit(0);
@@ -118,21 +122,9 @@ antlrcpp::Any PearlVisitor::visitExtra(ShellGrammarParser::ExtraContext *ctx)
     return nullptr;
 }
 
-antlrcpp::Any PearlVisitor::visitInput(ShellGrammarParser::InputContext *ctx)
-{
-    cout << "Input?: " << endl;
-    return ShellGrammarBaseVisitor::visitInput(ctx);
-}
-
-antlrcpp::Any PearlVisitor::visitOutput(ShellGrammarParser::OutputContext *ctx)
-{
-    cout << "Output?: " << endl;
-    return ShellGrammarBaseVisitor::visitOutput(ctx);
-}
-
 int PearlVisitor::change_working_directory(vector<string> *ls)
 {
-    int result = -1;
+    int result;
     if (ls->size() > 0)
     {
         result = chdir(ls->back().c_str());
@@ -143,4 +135,80 @@ int PearlVisitor::change_working_directory(vector<string> *ls)
         result = chdir("/");
     }
     return result;
+}
+
+antlrcpp::Any PearlVisitor::visitIn(ShellGrammarParser::InContext *ctx)
+{
+    return io_in_path = ctx->path->getText();
+}
+
+antlrcpp::Any PearlVisitor::visitOut(ShellGrammarParser::OutContext *ctx)
+{
+    return io_out_path = ctx->path->getText();
+}
+
+antlrcpp::Any PearlVisitor::visitErr(ShellGrammarParser::ErrContext *ctx)
+{
+    return io_err_path = ctx->path->getText();
+}
+
+antlrcpp::Any PearlVisitor::visitAdd(ShellGrammarParser::AddContext *ctx)
+{
+    return io_add_path = ctx->path->getText();
+}
+
+void PearlVisitor::io_in()
+{
+    if (io_in_path != "")
+    {
+        int file_descriptor_in = open(io_in_path.c_str(), O_RDONLY | O_CLOEXEC);
+        io_in_path = "";
+        if (file_descriptor_in != -1)
+        {
+            dup2(file_descriptor_in, 0);
+            close(file_descriptor_in);
+        }
+    }
+}
+
+void PearlVisitor::io_out()
+{
+    if (io_out_path != "")
+    {
+        int file_descriptor_out = open(io_out_path.c_str(), O_WRONLY | O_CREAT | O_CLOEXEC);
+        io_out_path = "";
+        if (file_descriptor_out != -1)
+        {
+            dup2(file_descriptor_out, 1);
+            close(file_descriptor_out);
+        }
+    }
+}
+
+void PearlVisitor::io_err()
+{
+    if (io_err_path != "")
+    {
+        int file_descriptor_err = open(io_err_path.c_str(), O_WRONLY | O_CREAT | O_CLOEXEC);
+        io_err_path = "";
+        if (file_descriptor_err != -1)
+        {
+            dup2(file_descriptor_err, 2);
+            close(file_descriptor_err);
+        }
+    }
+}
+
+void PearlVisitor::io_add()
+{
+    if (io_add_path != "")
+    {
+        int file_descriptor_add = open(io_add_path.c_str(), O_APPEND | O_WRONLY | O_CREAT | O_CLOEXEC);
+        io_add_path = "";
+        if (file_descriptor_add != -1)
+        {
+            dup2(file_descriptor_add, 1);
+            close(file_descriptor_add);
+        }
+    }
 }

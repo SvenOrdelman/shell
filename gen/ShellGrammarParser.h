@@ -17,7 +17,7 @@ public:
   };
 
   enum {
-    RuleLine = 0, RuleCommand = 1, RuleExtra = 2, RuleInput = 3, RuleOutput = 4
+    RuleLine = 0, RuleCommand = 1, RuleExtra = 2, RuleIo = 3
   };
 
   ShellGrammarParser(antlr4::TokenStream *input);
@@ -33,8 +33,7 @@ public:
   class LineContext;
   class CommandContext;
   class ExtraContext;
-  class InputContext;
-  class OutputContext; 
+  class IoContext; 
 
   class  LineContext : public antlr4::ParserRuleContext {
   public:
@@ -65,6 +64,8 @@ public:
     antlr4::tree::TerminalNode* WS(size_t i);
     std::vector<ExtraContext *> extra();
     ExtraContext* extra(size_t i);
+    std::vector<IoContext *> io();
+    IoContext* io(size_t i);
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -81,9 +82,6 @@ public:
     ExtraContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *WORD();
-    antlr4::tree::TerminalNode *WS();
-    InputContext *input();
-    OutputContext *output();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -94,33 +92,72 @@ public:
 
   ExtraContext* extra();
 
-  class  InputContext : public antlr4::ParserRuleContext {
+  class  IoContext : public antlr4::ParserRuleContext {
   public:
-    InputContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    IoContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+   
+    IoContext() : antlr4::ParserRuleContext() { }
+    void copyFrom(IoContext *context);
+    using antlr4::ParserRuleContext::copyFrom;
+
     virtual size_t getRuleIndex() const override;
 
+   
+  };
+
+  class  AddContext : public IoContext {
+  public:
+    AddContext(IoContext *ctx);
+
+    antlr4::Token *path = nullptr;
+    antlr4::tree::TerminalNode *WS();
+    antlr4::tree::TerminalNode *WORD();
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
   };
 
-  InputContext* input();
-
-  class  OutputContext : public antlr4::ParserRuleContext {
+  class  ErrContext : public IoContext {
   public:
-    OutputContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
+    ErrContext(IoContext *ctx);
 
+    antlr4::Token *path = nullptr;
+    antlr4::tree::TerminalNode *WS();
+    antlr4::tree::TerminalNode *WORD();
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
   };
 
-  OutputContext* output();
+  class  InContext : public IoContext {
+  public:
+    InContext(IoContext *ctx);
+
+    antlr4::Token *path = nullptr;
+    antlr4::tree::TerminalNode *WS();
+    antlr4::tree::TerminalNode *WORD();
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
+  class  OutContext : public IoContext {
+  public:
+    OutContext(IoContext *ctx);
+
+    antlr4::Token *path = nullptr;
+    antlr4::tree::TerminalNode *WS();
+    antlr4::tree::TerminalNode *WORD();
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
+  IoContext* io();
 
 
 private:

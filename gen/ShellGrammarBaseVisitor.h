@@ -27,11 +27,19 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitInput(ShellGrammarParser::InputContext *ctx) override {
+  virtual antlrcpp::Any visitIn(ShellGrammarParser::InContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitOutput(ShellGrammarParser::OutputContext *ctx) override {
+  virtual antlrcpp::Any visitOut(ShellGrammarParser::OutContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitErr(ShellGrammarParser::ErrContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitAdd(ShellGrammarParser::AddContext *ctx) override {
     return visitChildren(ctx);
   }
 

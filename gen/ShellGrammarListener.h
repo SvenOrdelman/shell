@@ -23,11 +23,17 @@ public:
   virtual void enterExtra(ShellGrammarParser::ExtraContext *ctx) = 0;
   virtual void exitExtra(ShellGrammarParser::ExtraContext *ctx) = 0;
 
-  virtual void enterInput(ShellGrammarParser::InputContext *ctx) = 0;
-  virtual void exitInput(ShellGrammarParser::InputContext *ctx) = 0;
+  virtual void enterIn(ShellGrammarParser::InContext *ctx) = 0;
+  virtual void exitIn(ShellGrammarParser::InContext *ctx) = 0;
 
-  virtual void enterOutput(ShellGrammarParser::OutputContext *ctx) = 0;
-  virtual void exitOutput(ShellGrammarParser::OutputContext *ctx) = 0;
+  virtual void enterOut(ShellGrammarParser::OutContext *ctx) = 0;
+  virtual void exitOut(ShellGrammarParser::OutContext *ctx) = 0;
+
+  virtual void enterErr(ShellGrammarParser::ErrContext *ctx) = 0;
+  virtual void exitErr(ShellGrammarParser::ErrContext *ctx) = 0;
+
+  virtual void enterAdd(ShellGrammarParser::AddContext *ctx) = 0;
+  virtual void exitAdd(ShellGrammarParser::AddContext *ctx) = 0;
 
 
 };

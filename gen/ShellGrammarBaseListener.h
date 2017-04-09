@@ -25,11 +25,17 @@ public:
   virtual void enterExtra(ShellGrammarParser::ExtraContext * /*ctx*/) override { }
   virtual void exitExtra(ShellGrammarParser::ExtraContext * /*ctx*/) override { }
 
-  virtual void enterInput(ShellGrammarParser::InputContext * /*ctx*/) override { }
-  virtual void exitInput(ShellGrammarParser::InputContext * /*ctx*/) override { }
+  virtual void enterIn(ShellGrammarParser::InContext * /*ctx*/) override { }
+  virtual void exitIn(ShellGrammarParser::InContext * /*ctx*/) override { }
 
-  virtual void enterOutput(ShellGrammarParser::OutputContext * /*ctx*/) override { }
-  virtual void exitOutput(ShellGrammarParser::OutputContext * /*ctx*/) override { }
+  virtual void enterOut(ShellGrammarParser::OutContext * /*ctx*/) override { }
+  virtual void exitOut(ShellGrammarParser::OutContext * /*ctx*/) override { }
+
+  virtual void enterErr(ShellGrammarParser::ErrContext * /*ctx*/) override { }
+  virtual void exitErr(ShellGrammarParser::ErrContext * /*ctx*/) override { }
+
+  virtual void enterAdd(ShellGrammarParser::AddContext * /*ctx*/) override { }
+  virtual void exitAdd(ShellGrammarParser::AddContext * /*ctx*/) override { }
 
 
   virtual void enterEveryRule(antlr4::ParserRuleContext * /*ctx*/) override { }
