@@ -1,6 +1,6 @@
 grammar ShellGrammar;
 
-line: command (WS '|' WS command)* (WS bkg='&')?;
+line: WS? command (WS '|' WS command)* (WS bkg='&')? WS?;
 command: p=WORD (WS (extra | io))*;
 extra: p=WORD;
 io: '<' WS path=WORD     # in

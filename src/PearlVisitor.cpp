@@ -4,7 +4,7 @@
 
 #include <unistd.h>
 #include <fcntl.h>
-#include <wait.h>
+//#include <wait.h>
 #include "PearlVisitor.h"
 
 using namespace std;

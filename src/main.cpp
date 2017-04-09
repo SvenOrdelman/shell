@@ -9,38 +9,73 @@
 
 const std::string get_working_directory();
 
-int main() {
-    for(;;) {
+// command history
+std::vector<std::string> history;
+
+int main()
+{
+    for (;;)
+    {
         std::cout << "\n" << get_working_directory() << " $ ";
         std::cout.flush();
 
         std::string line;
         getline(std::cin, line);
-        if (line == "exit"){
+        if (line == "exit")
+        {
             break;
         }
+
+        // check if a previous command is supposed to be executed
+        int count = 0;
+        for (unsigned long i = 0; i < line.size(); ++i)
+        {
+            if (line.at(i) == '^')
+            {
+                count++;
+            }
+            else
+            {
+                break;
+            }
+        }
+        if (count > 0)
+        {
+            if (count <= history.size())
+            {
+                line = history.at(history.size() - count);
+            }
+            else
+            {
+                std::cerr << "Previous command not available." << std::endl;
+            }
+        }
+
+        // add the command to the history
+        history.push_back(line);
 
         // Create input stream, create lexer and use lexer to create stream of tokens
         try
         {
+            // input the line
             antlr4::ANTLRInputStream inputStream(line);
             ShellGrammarLexer lexer(&inputStream);
             antlr4::CommonTokenStream tokens(&lexer);
 
-            // Create parser
+            // parse the line
             ShellGrammarParser parser(&tokens);
             antlr4::tree::ParseTree *parseTree = parser.line();
 
-            // Then, visit your tree
+            // visit the tree TODO: if parsing succeeded
             PearlVisitor visitor;
             visitor.visit(parseTree);
         }
         catch (...)
         {
-
+            // TODO: does not catch the parse exception
         }
     }
-    std::cout << "bye" << std::endl;
+    std::cout << "\n :)" << std::endl;
 
     return 0;
 }
