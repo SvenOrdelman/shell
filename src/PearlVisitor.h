@@ -22,7 +22,7 @@ public:
 
     int change_working_directory(std::vector<std::string>* list);
 
-    void execute(std::vector<antlr4::tree::ParseTree*>* programs);
+    void execute(std::vector<ShellGrammarParser::CommandContext *>* programs);
 };
 
 
