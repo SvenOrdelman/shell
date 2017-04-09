@@ -1,5 +1,5 @@
 //
-// Created by sven on 31-3-17.
+// Created by Jeroen Smienk on 31-3-17.
 //
 
 #include <unistd.h>
@@ -17,6 +17,9 @@ string io_out_path = "";
 string io_err_path = "";
 string io_add_path = "";
 
+/*
+ * Visit a line which can consist of a program or one or more pipelines
+ */
 antlrcpp::Any PearlVisitor::visitLine(ShellGrammarParser::LineContext *ctx)
 {
     // get all the commands
@@ -43,7 +46,7 @@ antlrcpp::Any PearlVisitor::visitLine(ShellGrammarParser::LineContext *ctx)
         } else {
             // shell thread
 
-            // wait if no '&'
+            // wait if there is no '&' at the end
             if (ctx->bkg == nullptr)
             {
                 waitpid(pid, 0, 0);
@@ -55,10 +58,10 @@ antlrcpp::Any PearlVisitor::visitLine(ShellGrammarParser::LineContext *ctx)
 
 void PearlVisitor::execute(vector<ShellGrammarParser::CommandContext *> *programs)
 {
-
+    reset_visits();
     // let the command gather the info
-    parameters.clear();
     visit(programs->back());
+    // remove the command from the list
     programs->pop_back();
 
     // if this program was not the last program
@@ -109,6 +112,9 @@ void PearlVisitor::execute(vector<ShellGrammarParser::CommandContext *> *program
     exit(0);
 }
 
+/*
+ * Set the program name
+ */
 antlrcpp::Any PearlVisitor::visitCommand(ShellGrammarParser::CommandContext *ctx)
 {
     visitChildren(ctx);
@@ -116,12 +122,18 @@ antlrcpp::Any PearlVisitor::visitCommand(ShellGrammarParser::CommandContext *ctx
     return nullptr;
 }
 
+/*
+ * Add a parameter to the parameters list
+ */
 antlrcpp::Any PearlVisitor::visitExtra(ShellGrammarParser::ExtraContext *ctx)
 {
     parameters.push_back(ctx->p->getText());
     return nullptr;
 }
 
+/*
+ * Change the current working directory to a path
+ */
 int PearlVisitor::change_working_directory(vector<string> *ls)
 {
     int result;
@@ -137,32 +149,46 @@ int PearlVisitor::change_working_directory(vector<string> *ls)
     return result;
 }
 
+/*
+ * Set the input stream redirection path
+ */
 antlrcpp::Any PearlVisitor::visitIn(ShellGrammarParser::InContext *ctx)
 {
     return io_in_path = ctx->path->getText();
 }
 
+/*
+ * Set the output stream redirection path (override)
+ */
 antlrcpp::Any PearlVisitor::visitOut(ShellGrammarParser::OutContext *ctx)
 {
     return io_out_path = ctx->path->getText();
 }
 
+/*
+ * Set the error stream redirection path
+ */
 antlrcpp::Any PearlVisitor::visitErr(ShellGrammarParser::ErrContext *ctx)
 {
     return io_err_path = ctx->path->getText();
 }
 
+/*
+ * Set the output stream redirection path (append)
+ */
 antlrcpp::Any PearlVisitor::visitAdd(ShellGrammarParser::AddContext *ctx)
 {
     return io_add_path = ctx->path->getText();
 }
 
+/*
+ * Redirects input stream from a path
+ */
 void PearlVisitor::io_in()
 {
     if (io_in_path != "")
     {
         int file_descriptor_in = open(io_in_path.c_str(), O_RDONLY | O_CLOEXEC);
-        io_in_path = "";
         if (file_descriptor_in != -1)
         {
             dup2(file_descriptor_in, 0);
@@ -171,12 +197,14 @@ void PearlVisitor::io_in()
     }
 }
 
+/*
+ * Redirects output stream to a path and override it
+ */
 void PearlVisitor::io_out()
 {
     if (io_out_path != "")
     {
         int file_descriptor_out = open(io_out_path.c_str(), O_WRONLY | O_CREAT | O_CLOEXEC);
-        io_out_path = "";
         if (file_descriptor_out != -1)
         {
             dup2(file_descriptor_out, 1);
@@ -185,12 +213,14 @@ void PearlVisitor::io_out()
     }
 }
 
+/*
+ * Redirects error stream to a path
+ */
 void PearlVisitor::io_err()
 {
     if (io_err_path != "")
     {
         int file_descriptor_err = open(io_err_path.c_str(), O_WRONLY | O_CREAT | O_CLOEXEC);
-        io_err_path = "";
         if (file_descriptor_err != -1)
         {
             dup2(file_descriptor_err, 2);
@@ -199,16 +229,30 @@ void PearlVisitor::io_err()
     }
 }
 
+/*
+ * Redirects output stream to a path and appends it
+ */
 void PearlVisitor::io_add()
 {
     if (io_add_path != "")
     {
         int file_descriptor_add = open(io_add_path.c_str(), O_APPEND | O_WRONLY | O_CREAT | O_CLOEXEC);
-        io_add_path = "";
         if (file_descriptor_add != -1)
         {
             dup2(file_descriptor_add, 1);
             close(file_descriptor_add);
         }
     }
+}
+
+/*
+ * Resets the gathered information by a previous command visit
+ */
+void PearlVisitor::reset_visits()
+{
+    parameters.clear();
+    io_in_path = "";
+    io_out_path = "";
+    io_err_path = "";
+    io_add_path = "";
 }

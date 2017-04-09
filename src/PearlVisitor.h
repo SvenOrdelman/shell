@@ -36,6 +36,8 @@ public:
     void io_err();
 
     void io_add();
+
+    void reset_visits();
 };
 
 
