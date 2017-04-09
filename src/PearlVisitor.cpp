@@ -29,7 +29,7 @@ antlrcpp::Any PearlVisitor::visitLine(ShellGrammarParser::LineContext *ctx)
     vector<ShellGrammarParser::CommandContext *> programs = ctx->command();
 
     // check to see if it is a cd before we do anything else
-    visit(programs.back());
+    visit(programs.front());
 
     if (program == "cd")
     {
