@@ -39,7 +39,12 @@ antlrcpp::Any PearlVisitor::visitLine(ShellGrammarParser::LineContext *ctx)
             execute(&programs);
         } else {
             // shell thread
-            waitpid(pid, 0, 0);
+
+            // wait if no '&'
+            if (ctx->bkg == nullptr)
+            {
+                waitpid(pid, 0, 0);
+            }
         }
     }
     return nullptr;
@@ -132,6 +137,10 @@ int PearlVisitor::change_working_directory(vector<string> *ls)
     {
         result = chdir(ls->back().c_str());
         ls->pop_back();
+    }
+    else
+    {
+        result = chdir("/");
     }
     return result;
 }

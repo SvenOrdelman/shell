@@ -1,5 +1,5 @@
 
-// Generated from /home/jeroen/CLionProjects/RealPearlShell/ShellGrammar.g4 by ANTLR 4.6
+// Generated from /Users/jeroen/Documents/Saxion/leerjaar 2/2.3/Compilers & Operating Systems/PearlShell/ShellGrammar.g4 by ANTLR 4.6
 
 #pragma once
 
@@ -12,7 +12,8 @@
 class  ShellGrammarParser : public antlr4::Parser {
 public:
   enum {
-    T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, WORD = 6, WS = 7
+    T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, T__5 = 6, WORD = 7, 
+    WS = 8
   };
 
   enum {
@@ -37,8 +38,7 @@ public:
 
   class  LineContext : public antlr4::ParserRuleContext {
   public:
-    ShellGrammarParser::CommandContext *commandContext = nullptr;;
-    std::vector<CommandContext *> c;;
+    antlr4::Token *bkg = nullptr;;
     LineContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     std::vector<CommandContext *> command();
