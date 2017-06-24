@@ -147,7 +147,8 @@ int PearlVisitor::change_working_directory(vector<string> *ls)
     }
     else
     {
-        result = chdir("/");
+        // if no arguments were given, move to home
+        result = chdir(getenv("HOME"));
     }
     return result;
 }

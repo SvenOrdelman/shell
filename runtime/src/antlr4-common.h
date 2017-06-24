@@ -35,7 +35,7 @@
 #include <condition_variable>
 
 // Defines for the Guid class and other platform dependent stuff.
-#ifdef _MSC_VER
+#ifdef _WIN32
   #pragma warning (disable: 4250) // Class inherits by dominance.
   #pragma warning (disable: 4512) // assignment operator could not be generated
 
@@ -69,9 +69,7 @@
     #endif
   #endif
 
-  #if _MSC_VER
-    class ANTLR4CPP_PUBLIC std::exception; // Needed for VS 2015.
-  #endif
+  class ANTLR4CPP_PUBLIC std::exception; // Needed for VS 2015.
 
 #elif __APPLE__
   #define GUID_CFUUID
