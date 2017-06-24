@@ -38,15 +38,16 @@ antlrcpp::Any PearlVisitor::visitLine(ShellGrammarParser::LineContext *ctx)
         {
             cerr << "Directory not found." << endl;
         }
-    }
-    else
+    } else
     {
         // other program than cd
         int pid = fork();
-        if (pid == 0) {
+        if (pid == 0)
+        {
             // execute the program (or more)
             execute(&programs);
-        } else {
+        } else
+        {
             // shell thread
 
             // wait if there is no '&' at the end
@@ -83,7 +84,8 @@ void PearlVisitor::execute(vector<ShellGrammarParser::CommandContext *> *program
             close(pipeline[1]);
 
             execute(programs);
-        } else {
+        } else
+        {
             // let the read side be connected to the second command
             dup2(pipeline[0], 0);
             close(pipeline[0]);
@@ -144,8 +146,7 @@ int PearlVisitor::change_working_directory(vector<string> *ls)
     {
         result = chdir(ls->back().c_str());
         ls->pop_back();
-    }
-    else
+    } else
     {
         // if no arguments were given, move to home
         result = chdir(getenv("HOME"));
@@ -199,6 +200,10 @@ void PearlVisitor::io_in()
             // redirect std::in to the file descriptor
             dup2(file_descriptor_in, 0);
             close(file_descriptor_in);
+        } else
+        {
+            cerr << "File '" << io_in_path << "' can not be found or might not have the right permissions." << endl;
+            exit(0);
         }
     }
 }
@@ -217,6 +222,10 @@ void PearlVisitor::io_out()
             // redirect std::out to the file descriptor
             dup2(file_descriptor_out, 1);
             close(file_descriptor_out);
+        } else
+        {
+            cerr << "File '" << io_out_path << "' might not have the right permissions." << endl;
+            exit(0);
         }
     }
 }
@@ -235,6 +244,10 @@ void PearlVisitor::io_err()
             // redirect std::err to the file descriptor
             dup2(file_descriptor_err, 2);
             close(file_descriptor_err);
+        } else
+        {
+            cerr << "File '" << io_err_path << "' might not have the right permissions." << endl;
+            exit(0);
         }
     }
 }
@@ -253,6 +266,10 @@ void PearlVisitor::io_add()
             // redirect std::out to the file descriptor
             dup2(file_descriptor_add, 1);
             close(file_descriptor_add);
+        } else
+        {
+            cerr << "File '" << io_add_path << "' might not have the right permissions." << endl;
+            exit(0);
         }
     }
 }
